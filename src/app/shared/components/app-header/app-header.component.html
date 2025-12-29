@@ -1,0 +1,87 @@
+<header class="header">
+  <div class="header-left">
+    <!-- Sidebar trigger -->
+    <button hlmSidebarTrigger>
+      <ng-icon hlm name="lucideMenu" size="20px" />
+    </button>
+
+    <!-- Breadcrumb -->
+    <app-breadcrumb />
+  </div>
+
+  <div class="header-right">
+    <!-- User dropdown -->
+    <div class="user-menu">
+      <button
+        hlmBtn
+        variant="ghost"
+        class="user-trigger"
+        [hlmDropdownMenuTrigger]="userMenu"
+      >
+        <hlm-avatar class="size-8">
+          @if (user().avatar) {
+          <img hlmAvatarImage [src]="user().avatar" [alt]="user().name" />
+          }
+          <span
+            hlmAvatarFallback
+            class="bg-primary text-primary-foreground text-xs font-medium"
+          >
+            {{ user().initials }}
+          </span>
+        </hlm-avatar>
+        <div class="user-info">
+          <span class="user-name">{{ user().name }}</span>
+          <span class="user-role">{{ user().role }}</span>
+        </div>
+        <ng-icon hlm name="lucideChevronDown" size="16px" class="chevron" />
+      </button>
+
+      <ng-template #userMenu>
+        <div
+          hlmDropdownMenu
+          class="w-56 bg-[var(--popover)] text-[var(--popover-foreground)]"
+        >
+          <div hlmDropdownMenuLabel class="font-normal">
+            <div class="flex flex-col space-y-1">
+              <p
+                class="text-sm font-medium leading-none text-[var(--popover-foreground)]"
+              >
+                {{ user().name }}
+              </p>
+              <p class="text-xs leading-none text-[var(--muted-foreground)]">
+                {{ user().email }}
+              </p>
+            </div>
+          </div>
+          <hlm-dropdown-menu-separator />
+          <!-- <div hlmDropdownMenuGroup>
+            <button hlmDropdownMenuItem>
+              <ng-icon hlm name="lucideUser" size="16px" class="mr-2" />
+              <span>Profile</span>
+            </button>
+            <button hlmDropdownMenuItem>
+              <ng-icon hlm name="lucideSettings" size="16px" class="mr-2" />
+              <span>Settings</span>
+            </button>
+          </div> -->
+          <button
+            hlmDropdownMenuItem
+            (click)="onLogout()"
+            class="text-[var(--popover-foreground)] hover:bg-[var(--accent)] hover:text-white group"
+          >
+            <ng-icon
+              hlm
+              name="lucideLogOut"
+              size="16px"
+              class="mr-2 text-[var(--muted-foreground)] group-hover:text-white"
+            />
+            <span
+              class="text-[var(--popover-foreground)] group-hover:text-white"
+              >Log out</span
+            >
+          </button>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</header>

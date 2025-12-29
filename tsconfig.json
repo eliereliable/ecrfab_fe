@@ -19,8 +19,8 @@
     "module": "ES2022",
     "baseUrl": ".",
     "paths": {
-      "@libs/ui/*": ["libs/ui/*/src"],
-      "@spartan-ng/helm/*": ["libs/ui/*/src"]
+      "@libs/ui/*": ["libs/ui/*/src/index.ts", "libs/ui/*/src"],
+      "@spartan-ng/helm/*": ["libs/ui/*/src/index.ts", "libs/ui/*/src"]
     }
   },
   "angularCompilerOptions": {

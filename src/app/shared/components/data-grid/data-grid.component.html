@@ -1,0 +1,140 @@
+<div class="rounded-md border w-full max-w-full">
+  <!-- we defer the loading of the table, because tanstack manipulates the DOM with flexRender which can cause errors during SSR -->
+  @defer {
+  <div hlmTableContainer class="overflow-x-auto">
+    <table hlmTable>
+      <thead hlmTHead>
+        @for (headerGroup of _table.getHeaderGroups(); track headerGroup.id) {
+        <tr hlmTr>
+          @for (header of headerGroup.headers; track header.id) {
+          <th
+            hlmTh
+            [attr.colSpan]="header.colSpan"
+            [class.cursor-pointer]="header.column.getCanSort()"
+            [class.select-none]="header.column.getCanSort()"
+            (click)="
+              header.column.getCanSort() && header.column.toggleSorting()
+            "
+          >
+            @if (!header.isPlaceholder) {
+            <div class="flex items-center gap-2">
+              <ng-container
+                *flexRender="
+                  header.column.columnDef.header;
+                  props: header.getContext();
+                  let headerText
+                "
+              >
+                <div [innerHTML]="sanitizeHtml(headerText)"></div>
+              </ng-container>
+              @if (header.column.getCanSort()) {
+              <ng-icon
+                [name]="getSortIcon(header.column)"
+                class="h-4 w-4 text-muted-foreground"
+              />
+              }
+            </div>
+            }
+          </th>
+          }
+        </tr>
+        }
+      </thead>
+      <tbody hlmTBody>
+        @for (row of _table.getRowModel().rows; track row.id) {
+        <tr
+          hlmTr
+          [attr.key]="row.id"
+          [attr.data-state]="row.getIsSelected() && 'selected'"
+        >
+          @for (cell of row.getVisibleCells(); track $index) {
+          <td hlmTd>
+            <ng-container
+              *ngIf="
+                cell.column.id === 'actions' && actionsTemplate;
+                else defaultCell
+              "
+            >
+              <ng-container
+                [ngTemplateOutlet]="actionsTemplate"
+                [ngTemplateOutletContext]="{
+                  $implicit: row.original,
+                  row: row
+                }"
+              ></ng-container>
+            </ng-container>
+            <ng-template #defaultCell>
+              <ng-container
+                *flexRender="
+                  cell.column.columnDef.cell;
+                  props: cell.getContext();
+                  let plainCell
+                "
+              >
+                <div [innerHTML]="sanitizeHtml(plainCell)"></div>
+              </ng-container>
+            </ng-template>
+          </td>
+          }
+        </tr>
+        } @empty {
+        <tr hlmTr>
+          <td hlmTd class="h-24 text-center" [attr.colspan]="columns().length">
+            No results.
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>
+
+<div class="flex flex-col justify-between py-4 sm:flex-row sm:items-center">
+  @if (dataGrid().length > 0 || totalCount() > 0) {
+  <div class="text-muted-foreground">
+    @if (_table.getSelectedRowModel().rows.length > 0) {
+    {{ _table.getSelectedRowModel().rows.length }} of
+    {{ dataGrid().length }} row(s) selected } @else { Showing
+    {{ startIndex() }} to {{ endIndex() }} of {{ totalCount() }} entries }
+  </div>
+  <div class="mt-2 flex items-center space-x-2 sm:mt-0">
+    <button
+      size="sm"
+      variant="outline"
+      hlmBtn
+      [disabled]="!canPreviousPage()"
+      (click)="onPreviousPage()"
+    >
+      Previous
+    </button>
+    <span class="text-sm text-muted-foreground">
+      Page {{ pageIndex() + 1 }} of {{ totalPages() }}
+    </span>
+    <button
+      size="sm"
+      variant="outline"
+      hlmBtn
+      [disabled]="!canNextPage()"
+      (click)="onNextPage()"
+    >
+      Next
+    </button>
+    <brn-select
+      [value]="pageSize().toString()"
+      (valueChange)="onPageSizeChange($event ? +$event : pageSize())"
+      class="ml-2"
+    >
+      <hlm-select-trigger class="w-fit">
+        <hlm-select-value />
+      </hlm-select-trigger>
+      <hlm-select-content>
+        <hlm-option value="10">10 / page</hlm-option>
+        <hlm-option value="20">20 / page</hlm-option>
+        <hlm-option value="50">50 / page</hlm-option>
+        <hlm-option value="100">100 / page</hlm-option>
+      </hlm-select-content>
+    </brn-select>
+  </div>
+  }
+</div>

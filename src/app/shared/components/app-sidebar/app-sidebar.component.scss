@@ -1,0 +1,31 @@
+@reference "tailwindcss";
+
+:host {
+  display: contents;
+}
+
+/* Sidebar menu item spacing */
+:host ::ng-deep {
+  [data-sidebar="menu"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  [data-sidebar="menu-item"] {
+    margin-bottom: 0.125rem;
+  }
+
+  [data-sidebar="menu-button"] {
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  [data-sidebar="group"] {
+    padding: 0.75rem 0.5rem;
+  }
+
+  [data-sidebar="group-content"] {
+    padding: 0.25rem 0;
+  }
+}

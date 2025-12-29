@@ -1,0 +1,83 @@
+<hlm-sidebar collapsible="icon" variant="sidebar">
+  <!-- Sidebar Header with Logo -->
+  <hlm-sidebar-header class="border-b border-sidebar-border">
+    <div hlmSidebarMenuButton size="lg" class="pointer-events-none">
+      <div class="flex items-center justify-center rounded-lg w-full pb-2">
+        <img src="/ecr_logo.png" alt="ECR" class="w-[65px]" />
+      </div>
+    </div>
+  </hlm-sidebar-header>
+
+  <!-- Sidebar Content -->
+  <hlm-sidebar-content>
+    <hlm-sidebar-group>
+      <div hlmSidebarGroupContent>
+        <ul hlmSidebarMenu>
+          @for (item of navItems; track item.label) { @if (item.children &&
+          item.children.length > 0) {
+          <!-- Item with children -->
+          <li hlmSidebarMenuItem>
+            <button
+              hlmSidebarMenuButton
+              (click)="toggleExpanded(item.label)"
+              [attr.data-state]="isExpanded(item.label) ? 'open' : 'closed'"
+            >
+              <ng-icon hlm [name]="item.icon" size="16px" />
+              <span>{{ item.label }}</span>
+              @if (isExpanded(item.label)) {
+              <ng-icon
+                hlm
+                name="lucideChevronDown"
+                size="14px"
+                class="ml-auto"
+              />
+              } @else {
+              <ng-icon
+                hlm
+                name="lucideChevronRight"
+                size="14px"
+                class="ml-auto"
+              />
+              }
+            </button>
+            @if (isExpanded(item.label)) {
+            <ul hlmSidebarMenuSub>
+              @for (child of item.children; track child.label) {
+              <li hlmSidebarMenuSubItem>
+                <a
+                  hlmSidebarMenuSubButton
+                  [routerLink]="child.route"
+                  routerLinkActive="data-[active=true]"
+                >
+                  <ng-icon hlm [name]="child.icon" size="14px" />
+                  <span>{{ child.label }}</span>
+                </a>
+              </li>
+              }
+            </ul>
+            }
+          </li>
+          } @else {
+          <!-- Simple item -->
+          <li hlmSidebarMenuItem>
+            <a
+              hlmSidebarMenuButton
+              [routerLink]="item.route"
+              routerLinkActive
+              #rla="routerLinkActive"
+              [isActive]="rla.isActive"
+              [tooltip]="item.label"
+            >
+              <ng-icon hlm [name]="item.icon" size="16px" />
+              <span>{{ item.label }}</span>
+              @if (item.badge) {
+              <hlm-sidebar-menu-badge>{{ item.badge }}</hlm-sidebar-menu-badge>
+              }
+            </a>
+          </li>
+          } }
+        </ul>
+      </div>
+    </hlm-sidebar-group>
+  </hlm-sidebar-content>
+</hlm-sidebar>

@@ -1,0 +1,15 @@
+<hlm-sidebar-wrapper>
+  <!-- App Sidebar -->
+  <app-sidebar />
+
+  <!-- Main Content Area -->
+  <main hlmSidebarInset class="min-w-0">
+    <!-- Header -->
+    <app-header [user]="currentUser" (logout)="onLogout()" />
+
+    <!-- Page Content -->
+    <div class="main-content">
+      <router-outlet />
+    </div>
+  </main>
+</hlm-sidebar-wrapper>
