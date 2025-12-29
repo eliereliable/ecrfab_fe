@@ -1,0 +1,154 @@
+<div class="login-page">
+  <!-- Background with industrial pattern -->
+  <div class="login-background">
+    <div class="grid-overlay"></div>
+    <div class="gradient-overlay"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="login-container">
+    <!-- Left side - Branding (hidden on mobile, shown on lg+) -->
+    <div class="login-branding hidden lg:flex">
+      <div class="branding-content">
+        <div class="logo-section">
+          <img src="/ecr_logo.png" alt="ECR Logo" class="logo" />
+        </div>
+        <div class="tagline">
+          <h1>World-Class Ship Repair</h1>
+          <p>
+            Trusted by the marine, heavy industry, and government sectors since
+            1999
+          </p>
+        </div>
+        <div class="features">
+          <div class="feature">
+            <ng-icon hlm name="lucideAnchor" size="20px" />
+            <span>Virginia • Florida • California</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right side - Login Form -->
+    <div class="login-form-section">
+      <div class="login-card">
+        <div class="card-header">
+          <h2>Welcome Back</h2>
+          <p>Sign in to access your ECR portal</p>
+        </div>
+
+        <form (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Email Field -->
+          <div class="form-field">
+            <label hlmLabel for="email" class="field-label">
+              Email Address
+            </label>
+            <div class="input-wrapper">
+              <ng-icon hlm name="lucideMail" size="18px" class="input-icon" />
+              <input
+                hlmInput
+                type="email"
+                id="email"
+                name="email"
+                [ngModel]="email()"
+                (ngModelChange)="email.set($event)"
+                (blur)="onEmailBlur()"
+                placeholder="you&#64;company.com"
+                [class]="
+                  'input-with-icon ' + (showEmailError() ? 'input-error' : '')
+                "
+                autocomplete="email"
+              />
+            </div>
+            @if (showEmailError()) {
+            <span class="error-message"
+              >Please enter a valid email address</span
+            >
+            }
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-field">
+            <div class="label-row">
+              <label hlmLabel for="password" class="field-label">
+                Password
+              </label>
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+            <div class="input-wrapper">
+              <ng-icon hlm name="lucideLock" size="18px" class="input-icon" />
+              <input
+                hlmInput
+                [type]="passwordInputType()"
+                id="password"
+                name="password"
+                [ngModel]="password()"
+                (ngModelChange)="password.set($event)"
+                (blur)="onPasswordBlur()"
+                placeholder="Enter your password"
+                [class]="
+                  'input-with-icon input-with-toggle ' +
+                  (showPasswordError() ? 'input-error' : '')
+                "
+                autocomplete="current-password"
+              />
+              <button
+                type="button"
+                class="password-toggle"
+                (click)="togglePasswordVisibility()"
+                tabindex="-1"
+              >
+                @if (showPassword()) {
+                <ng-icon hlm name="lucideEyeOff" size="18px" />
+                } @else {
+                <ng-icon hlm name="lucideEye" size="18px" />
+                }
+              </button>
+            </div>
+            @if (showPasswordError()) {
+            <span class="error-message"
+              >Password must be at least 6 characters</span
+            >
+            }
+          </div>
+
+          <!-- Remember Me -->
+          <div class="remember-row">
+            <label class="checkbox-label">
+              <hlm-checkbox
+                [checked]="rememberMe()"
+                (checkedChange)="rememberMe.set($event)"
+              />
+              <span>Remember me for 30 days</span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button
+            hlmBtn
+            type="submit"
+            [disabled]="isLoading()"
+            class="submit-btn"
+          >
+            @if (isLoading()) {
+            <ng-icon
+              hlm
+              name="lucideLoader2"
+              size="18px"
+              class="animate-spin"
+            />
+            <span>Signing in...</span>
+            } @else {
+            <span>Sign In</span>
+            }
+          </button>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="login-footer">
+        <p>© 2025 East Coast Repair & Fabrication. All Rights Reserved.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,401 @@
+@reference "tailwindcss";
+
+:host {
+  display: block;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.login-page {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.login-background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1a2b36 0%, #0d1a22 50%, #051015 100%);
+  z-index: 0;
+
+  .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+        rgba(0, 153, 168, 0.03) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(0, 153, 168, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        ellipse at 20% 50%,
+        rgba(0, 153, 168, 0.15) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at 80% 80%,
+        rgba(107, 123, 138, 0.1) 0%,
+        transparent 40%
+      );
+  }
+}
+
+.login-container {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.login-branding {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  width: 50%;
+
+  @media (min-width: 1024px) {
+    display: flex;
+  }
+
+  @media (min-width: 1280px) {
+    width: 55%;
+  }
+
+  .branding-content {
+    max-width: 32rem;
+
+    > * + * {
+      margin-top: 2rem;
+    }
+  }
+
+  .logo-section {
+    margin-bottom: 2rem;
+
+    .logo {
+      height: 5rem;
+      width: auto;
+      filter: drop-shadow(0 0 30px rgba(0, 153, 168, 0.3));
+    }
+  }
+
+  .tagline {
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+
+      @media (min-width: 1280px) {
+        font-size: 3rem;
+      }
+    }
+
+    p {
+      font-size: 1.125rem;
+      color: #d1d5db;
+      line-height: 1.7;
+    }
+  }
+
+  .features {
+    padding-top: 2rem;
+
+    .feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: #26b9c7;
+
+      ng-icon {
+        color: #26b9c7;
+      }
+
+      span {
+        color: #d1d5db;
+        font-weight: 500;
+        letter-spacing: 0.025em;
+      }
+    }
+  }
+}
+
+.login-form-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(
+    180deg,
+    rgba(248, 250, 251, 0.98) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
+  position: relative;
+  z-index: 1;
+
+  @media (min-width: 640px) {
+    padding: 2rem;
+  }
+
+  @media (min-width: 1024px) {
+    width: 50%;
+    clip-path: polygon(5% 0, 100% 0, 100% 100%, 0% 100%);
+  }
+
+  @media (min-width: 1280px) {
+    width: 45%;
+  }
+}
+
+.login-card {
+  width: 100%;
+  max-width: 28rem;
+
+  > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .card-header {
+    text-align: center;
+    margin-bottom: 2rem;
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+
+      @media (min-width: 640px) {
+        font-size: 1.875rem;
+      }
+    }
+
+    p {
+      color: #6b7280;
+    }
+  }
+}
+
+.login-form {
+  > * + * {
+    margin-top: 1.25rem;
+  }
+}
+
+.form-field {
+  > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .field-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .forgot-link {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #007a87;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #005c66;
+    }
+  }
+}
+
+.input-wrapper {
+  position: relative;
+
+  .input-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  .input-with-icon {
+    padding-left: 2.5rem;
+  }
+
+  .input-with-toggle {
+    padding-right: 2.5rem;
+  }
+
+  .input-error {
+    border-color: #ef4444;
+
+    &:focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+  }
+}
+
+.password-toggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: #4b5563;
+  }
+}
+
+.error-message {
+  font-size: 0.875rem;
+  color: #dc2626;
+  margin-top: 0.25rem;
+}
+
+.remember-row {
+  padding-top: 0.25rem;
+
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+
+    span {
+      font-size: 0.875rem;
+      color: #4b5563;
+    }
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  height: 2.75rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #0099a8 0%, #007a87 100%);
+  color: white;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, #00b4c5 0%, #0099a8 100%);
+    box-shadow: 0 4px 20px rgba(0, 153, 168, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}
+
+.divider {
+  position: relative;
+  padding: 1.5rem 0;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e5e7eb;
+  }
+
+  span {
+    position: relative;
+    background-color: white;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+  }
+}
+
+.contact-section {
+  text-align: center;
+
+  p {
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .contact-link {
+    font-weight: 500;
+    color: #007a87;
+    transition: color 0.2s;
+
+    &:hover {
+      color: #005c66;
+    }
+  }
+}
+
+.login-footer {
+  margin-top: 2rem;
+  text-align: center;
+
+  p {
+    font-size: 0.75rem;
+    color: #9ca3af;
+  }
+}
+
+// Animation for loading spinner
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+// Focus states with primary color
+input:focus {
+  border-color: #0099a8;
+  box-shadow: 0 0 0 3px rgba(0, 153, 168, 0.2);
+}
