@@ -31,7 +31,7 @@ import { HlmIcon } from '@libs/ui/icon';
 })
 export class LandingComponent {
   readonly loginUrl =
-    'https://localhost:44345/Auth/login?returnUrl=http%3A%2F%2Flocalhost%3A4200';
+    'http://localhost:8086/Auth/login?returnUrl=http%3A%2F%2Flocalhost%3A8086';
 
   onLogin(): void {
     window.location.href = this.loginUrl;
