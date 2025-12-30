@@ -17,8 +17,8 @@ export class AppBreadcrumbComponent {
   // Route labels mapping
   private readonly routeLabels: Record<string, string> = {
     'erl-glossary': 'ERL Glossary',
-    'uss-gravely-required-report-log': 'USS Gravely Required Report Log',
-    'uss-gravely-waf-log': 'USS Gravely WAF Log',
+    'uss-gravely-required-report-log': 'Required Report Log',
+    'uss-gravely-waf-log': 'WAF Log',
     'cfr-log': 'CFR Log',
     jsr: 'JSR',
     'time-by-job': 'Time By Job',

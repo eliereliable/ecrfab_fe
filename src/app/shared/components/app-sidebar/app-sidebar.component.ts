@@ -93,12 +93,12 @@ export class AppSidebarComponent {
       route: '/app/erl-glossary',
     },
     {
-      label: 'USS Gravely Required Report Log',
+      label: 'Required Report Log',
       icon: 'lucideFileText',
       route: '/app/uss-gravely-required-report-log',
     },
     {
-      label: 'USS Gravely WAF Log',
+      label: 'WAF Log',
       icon: 'lucideClipboardList',
       route: '/app/uss-gravely-waf-log',
     },
