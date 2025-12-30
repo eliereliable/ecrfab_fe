@@ -1,0 +1,64 @@
+<div class="flex flex-col gap-6 w-full max-w-full">
+  <!-- Toolbar -->
+  <div
+    class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
+  >
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-center w-full lg:w-auto"
+    >
+      <!-- Project Dropdown -->
+      <brn-select
+        [value]="selectedProject()"
+        (valueChange)="onProjectChange($event ?? selectedProject())"
+        class="w-full"
+      >
+        <hlm-select-trigger>
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+          @for (project of projectOptions; track project) {
+          <hlm-option [value]="project">{{ project }}</hlm-option>
+          }
+        </hlm-select-content>
+      </brn-select>
+
+      <!-- Filter dropdown (placeholder for future) -->
+      <button
+        hlmBtn
+        variant="outline"
+        size="sm"
+        class="flex items-center gap-2 shrink-0"
+      >
+        <ng-icon hlm name="lucideFilter" size="16px" />
+        <span>Filters</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <!-- Upload button -->
+      <button
+        hlmBtn
+        variant="outline"
+        size="sm"
+        class="flex items-center gap-2 shrink-0"
+        (click)="onUpload()"
+      >
+        <ng-icon hlm name="lucideUpload" size="16px" />
+        <span class="hidden sm:inline">Upload</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Data Grid -->
+  <app-data-grid
+    [dataGrid]="paginatedData()"
+    [columns]="columns()"
+    [pageIndex]="pageIndex()"
+    [pageSize]="pageSize()"
+    [totalCount]="filteredTotalCount()"
+    [sorting]="sorting()"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (sortingChange)="onSortingChange($event)"
+  />
+</div>

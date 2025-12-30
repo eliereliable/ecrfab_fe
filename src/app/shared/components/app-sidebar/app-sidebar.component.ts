@@ -90,37 +90,42 @@ export class AppSidebarComponent {
     {
       label: 'ERL Glossary and Headers',
       icon: 'lucideClipboardList',
-      route: '/erl-glossary',
+      route: '/app/erl-glossary',
     },
     {
       label: 'USS Gravely Required Report Log',
       icon: 'lucideFileText',
-      route: '/uss-gravely-required-report-log',
+      route: '/app/uss-gravely-required-report-log',
     },
     {
       label: 'USS Gravely WAF Log',
       icon: 'lucideClipboardList',
-      route: '/uss-gravely-waf-log',
+      route: '/app/uss-gravely-waf-log',
     },
     {
       label: 'CFR Log',
       icon: 'lucideShip',
-      route: '/cfr-log',
+      route: '/app/cfr-log',
     },
     {
       label: 'JSR',
       icon: 'lucideWrench',
-      route: '/jsr',
+      route: '/app/jsr',
     },
     {
       label: 'Time By Job',
       icon: 'lucideCalendar',
-      route: '/time-by-job',
+      route: '/app/time-by-job',
     },
     {
       label: 'TIP',
       icon: 'lucideUsers',
-      route: '/tip',
+      route: '/app/tip',
+    },
+    {
+      label: 'MSP',
+      icon: 'lucideCalendar',
+      route: '/app/msp',
     },
   ];
 

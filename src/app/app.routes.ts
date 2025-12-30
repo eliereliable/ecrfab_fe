@@ -64,6 +64,11 @@ export const routes: Routes = [
           import('./pages/tip/tip.component').then((m) => m.TipComponent),
       },
       {
+        path: 'msp',
+        loadComponent: () =>
+          import('./pages/msp/msp.component').then((m) => m.MspComponent),
+      },
+      {
         path: '',
         redirectTo: 'erl-glossary',
         pathMatch: 'full',
