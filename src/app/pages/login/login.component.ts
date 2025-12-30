@@ -101,6 +101,7 @@ export class LoginComponent {
   );
 
   constructor() {
+
     // Effect to log form state changes (for debugging)
     effect(() => {
       console.log('Form state:', {

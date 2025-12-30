@@ -5,7 +5,6 @@ import { provideIcons } from '@ng-icons/core';
 import {
   lucideFilter,
   lucideRefreshCw,
-  lucideSearch,
   lucideUpload,
 } from '@ng-icons/lucide';
 import { SortingState } from '@tanstack/angular-table';
@@ -40,7 +39,6 @@ import {
   ],
   providers: [
     provideIcons({
-      lucideSearch,
       lucideFilter,
       lucideUpload,
       lucideRefreshCw,
@@ -64,26 +62,18 @@ export class UssGravelyRequiredReportLogComponent {
   // Sorting signal
   protected readonly sorting = signal<SortingState>([]);
 
-  // Search/filter signal
-  protected readonly searchQuery = signal('');
+  // Project filter signal
+  protected readonly projectOptions = [
+    'USS GRAVELY (DDG-107) FY26 SRA',
+    'Project 2',
+    'Project 3',
+  ];
+  protected readonly selectedProject = signal<string>(
+    'USS GRAVELY (DDG-107) FY26 SRA'
+  );
 
   // Filtered data
-  protected readonly filteredData = computed(() => {
-    const query = this.searchQuery().toLowerCase().trim();
-    if (!query) return this.data();
-
-    return this.data().filter((item) => {
-      return (
-        item.vesselNameAndHull?.toLowerCase().includes(query) ||
-        item.contract?.toLowerCase().includes(query) ||
-        item.ecrJobOrder?.toLowerCase().includes(query) ||
-        item.title?.toLowerCase().includes(query) ||
-        item.navyItemNumber?.toLowerCase().includes(query) ||
-        item.stdItem?.toLowerCase().includes(query) ||
-        item.cfrNmdNumber?.toLowerCase().includes(query)
-      );
-    });
-  });
+  protected readonly filteredData = computed(() => this.data());
 
   // Paginated data
   protected readonly paginatedData = computed(() => {
@@ -113,12 +103,6 @@ export class UssGravelyRequiredReportLogComponent {
     console.log('Sorting changed:', sorting);
   }
 
-  onSearchChange(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    this.searchQuery.set(target.value);
-    this.pageIndex.set(0); // Reset to first page on search
-  }
-
   onRefresh(): void {
     // In a real app, you would reload data from API
     console.log('Refreshing data...');
@@ -127,5 +111,14 @@ export class UssGravelyRequiredReportLogComponent {
   onUpload(): void {
     // In a real app, you would upload a file
     console.log('Uploading file...');
+  }
+
+  onProjectChange(project: string | string[] | undefined): void {
+    if (project && typeof project === 'string') {
+      this.selectedProject.set(project);
+      this.pageIndex.set(0); // Reset to first page on project change
+      // In a real app, you would filter data by project
+      console.log('Project changed:', project);
+    }
   }
 }

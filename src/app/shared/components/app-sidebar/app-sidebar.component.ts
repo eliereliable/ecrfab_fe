@@ -88,7 +88,7 @@ export class AppSidebarComponent {
 
   readonly navItems: NavItem[] = [
     {
-      label: 'ERL Glossary',
+      label: 'ERL Glossary and Headers',
       icon: 'lucideClipboardList',
       route: '/erl-glossary',
     },

@@ -6,25 +6,21 @@
     <div
       class="flex flex-col gap-3 sm:flex-row sm:items-center w-full lg:w-auto"
     >
-      <!-- Search Input -->
-      <div
-        class="relative flex items-center flex-1 min-w-0 sm:flex-none sm:w-80"
+      <!-- Project Dropdown -->
+      <brn-select
+        [value]="selectedProject()"
+        (valueChange)="onProjectChange($event ?? selectedProject())"
+        class="w-full"
       >
-        <ng-icon
-          hlm
-          name="lucideSearch"
-          size="16px"
-          class="absolute left-3 text-[var(--muted-foreground)]"
-        />
-        <input
-          hlmInput
-          type="text"
-          placeholder="Search by vessel, contract, job order, title..."
-          class="pl-10 w-full"
-          [value]="searchQuery()"
-          (input)="onSearchChange($event)"
-        />
-      </div>
+        <hlm-select-trigger>
+          <hlm-select-value />
+        </hlm-select-trigger>
+        <hlm-select-content>
+          @for (project of projectOptions; track project) {
+          <hlm-option [value]="project">{{ project }}</hlm-option>
+          }
+        </hlm-select-content>
+      </brn-select>
 
       <!-- Filter dropdown (placeholder for future) -->
       <button
