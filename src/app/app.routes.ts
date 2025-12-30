@@ -2,12 +2,19 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
+    path: '',
+    loadComponent: () =>
+      import('./pages/landing/landing.component').then(
+        (m) => m.LandingComponent
+      ),
+  },
+  {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.component').then((m) => m.LoginComponent),
   },
   {
-    path: '',
+    path: 'app',
     loadComponent: () =>
       import('./layout/layout.component').then((m) => m.LayoutComponent),
     children: [
@@ -42,9 +49,7 @@ export const routes: Routes = [
       {
         path: 'jsr',
         loadComponent: () =>
-          import('./pages/jsr/jsr.component').then(
-            (m) => m.JsrComponent
-          ),
+          import('./pages/jsr/jsr.component').then((m) => m.JsrComponent),
       },
       {
         path: 'time-by-job',
@@ -56,9 +61,7 @@ export const routes: Routes = [
       {
         path: 'tip',
         loadComponent: () =>
-          import('./pages/tip/tip.component').then(
-            (m) => m.TipComponent
-          ),
+          import('./pages/tip/tip.component').then((m) => m.TipComponent),
       },
       {
         path: '',
