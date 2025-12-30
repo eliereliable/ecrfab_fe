@@ -27,6 +27,7 @@ import {
   erlGlossaryColumns,
   mockErlGlossaryData,
 } from './erl-glossary.model';
+import { ErlGlossaryService } from './erl-glossary.service';
 
 @Component({
   selector: 'app-erl-glossary',
@@ -58,7 +59,7 @@ import {
 })
 export class ErlGlossaryComponent {
   private readonly dialogService = inject(HlmDialogService);
-
+  private readonly erlGlossaryService = inject(ErlGlossaryService);
   // Data signals
   protected readonly data = signal<ErlGlossaryItem[]>(mockErlGlossaryData);
   protected readonly columns = signal(erlGlossaryColumns);
@@ -104,6 +105,12 @@ export class ErlGlossaryComponent {
   protected readonly filteredTotalCount = computed(
     () => this.filteredData().length
   );
+
+  ngOnInit(): void {
+    this.erlGlossaryService.getUser().subscribe((user) => {
+      console.log(user);
+    });
+  }
 
   // Event handlers
   onPageChange(page: number): void {
