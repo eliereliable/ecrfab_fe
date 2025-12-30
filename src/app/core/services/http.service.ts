@@ -78,7 +78,9 @@ export class HttpService {
    */
   getDataFromServer(action: string) {
     return this.http
-      .get(this.apiUrl() + action)
+      .get(this.apiUrl() + action, {
+        withCredentials: true
+      })
       .pipe(map((response: any) => response));
   }
 
