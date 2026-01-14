@@ -110,7 +110,7 @@ export class ErlGlossaryComponent implements OnInit {
     this.erlGlossaryService.getERLGlossaryList().subscribe({
       next: (response: any) => {
         // Handle API response - adjust based on your API structure
-        const items = response?.data || response || [];
+        const items = response?.items || response || [];
         this.data.set(Array.isArray(items) ? items : []);
         this.loading.set(false);
       },
@@ -189,7 +189,7 @@ export class ErlGlossaryComponent implements OnInit {
       type: 'danger',
       onConfirm: () => {
         // Perform the delete action when confirmed
-        this.erlGlossaryService.deleteERLGlossaryItem(item.id).subscribe({
+        this.erlGlossaryService.deleteERLGlossaryItem(item.id as number || 0).subscribe({
           next: (response) => {
             console.log('ERL Glossary item deleted successfully:', response);
             this.loadData();

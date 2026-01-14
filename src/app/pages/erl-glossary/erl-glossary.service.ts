@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HTTPResponse, HttpService } from '../../core/services/http.service';
+import { HttpService } from '../../core/services/http.service';
 import { ErlGlossaryItem } from './erl-glossary.model';
 
 @Injectable({
@@ -14,9 +14,15 @@ export class ErlGlossaryService {
 
   userURL = signal<string>(this.authController() + 'user');
 
-  erlGlossaryController = signal<string>('/ERLGlossary/');
-  erlGlossaryURL = signal<string>(
-    this.erlGlossaryController() + 'GetERLGlossaryList'
+  erlGlossaryController = signal<string>('ERLGlossary/');
+  getERLGlossaryURL = signal<string>(
+    this.erlGlossaryController() + 'GetERLGlossary'
+  );
+  addERLGlossaryURL = signal<string>(
+    this.erlGlossaryController() + 'ManageERLGlossary'
+  );
+  deleteERLGlossaryURL = signal<string>(
+    this.erlGlossaryController() + 'DeleteERLGlossary'
   );
 
   /**
@@ -32,7 +38,7 @@ export class ErlGlossaryService {
    * @returns Observable with ERL Glossary List response
    */
   getERLGlossaryList(): Observable<[]> {
-    return this.http.getDataFromServer(this.erlGlossaryURL());
+    return this.http.getDataFromServer(this.getERLGlossaryURL());
   }
 
   /**
@@ -41,7 +47,7 @@ export class ErlGlossaryService {
    * @returns Observable with ERL Glossary Item response
    */
   addERLGlossaryItem(item: ErlGlossaryItem): Observable<any> {
-    return this.http.postDataToServer(this.erlGlossaryURL(), item);
+    return this.http.postDataToServer(this.addERLGlossaryURL(), item);
   }
 
   /**
@@ -50,6 +56,6 @@ export class ErlGlossaryService {
    * @returns Observable with ERL Glossary Item response
    */
   deleteERLGlossaryItem(id: number): Observable<any> {
-    return this.http.deleteDataFromServer(this.erlGlossaryURL() + '?id=' + id);
+    return this.http.deleteDataFromServer(this.deleteERLGlossaryURL() + '?id=' + id);
   }
 }

@@ -28,7 +28,7 @@ export class HttpService {
    */
   postDataToServer(action: string, formData: any) {
     return this.http
-      .post(this.apiUrl() + action, formData)
+      .post(this.apiUrl() + action, formData, { withCredentials: true })
       .pipe(map((response: any) => response));
   }
 
@@ -47,7 +47,7 @@ export class HttpService {
     });
 
     return this.http
-      .post(this.apiUrl() + action, formData, { headers })
+      .post(this.apiUrl() + action, formData, { headers, withCredentials: true })
       .pipe(map((response: any) => response));
   }
 
@@ -67,7 +67,7 @@ export class HttpService {
     });
 
     return this.http
-      .put(this.apiUrl() + action, formData, { headers })
+      .put(this.apiUrl() + action, formData, { headers, withCredentials: true })
       .pipe(map((response: any) => response));
   }
 
@@ -103,7 +103,7 @@ export class HttpService {
    */
   updateDataInServer(action: string, formData: any) {
     return this.http
-      .put(this.apiUrl() + action, formData)
+      .put(this.apiUrl() + action, formData, { withCredentials: true })
       .pipe(map((response: any) => response));
   }
 
@@ -116,7 +116,7 @@ export class HttpService {
    */
   patchDataInServer(action: string, formData: any) {
     return this.http
-      .patch(this.apiUrl() + action, formData)
+      .patch(this.apiUrl() + action, formData, { withCredentials: true })
       .pipe(map((response: any) => response));
   }
 
@@ -127,7 +127,7 @@ export class HttpService {
    */
   deleteDataFromServer(action: string) {
     return this.http
-      .delete(this.apiUrl() + action)
+      .delete(this.apiUrl() + action, { withCredentials: true })
       .pipe(map((response: any) => response));
   }
 }

@@ -155,7 +155,7 @@ export class ErlGlossaryDetailComponent {
 
     const existingItem = this.dialogContext?.item;
     const item: ErlGlossaryItem = {
-      id: existingItem?.id || 0,
+      id: existingItem?.id || null,
       colmn_header: formValue.colmn_header,
       description: formValue.description,
       data_type: formValue.data_type,

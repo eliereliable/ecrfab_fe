@@ -1,7 +1,7 @@
 import { ColumnDef } from '@tanstack/angular-table';
 
 export interface ErlGlossaryItem {
-  id: number;
+  id: number | null;
   colmn_header: string;
   description: string;
   data_type: string;
