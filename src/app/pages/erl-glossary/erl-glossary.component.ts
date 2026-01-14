@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
-  lucideColumns,
   lucideFilter,
   lucidePlus,
   lucideRefreshCw,
@@ -13,20 +12,13 @@ import {
 import { SortingState } from '@tanstack/angular-table';
 
 import { HlmIcon } from '@libs/ui/icon';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmInputImports } from '@spartan-ng/helm/input';
-import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmDialogService } from '@libs/ui/dialog';
 import { DataGridComponent } from '../../shared/components/data-grid/data-grid.component';
 import { ErlGlossaryDetailComponent } from './erl-glossary-detail/erl-glossary-detail.component';
 
-import {
-  ErlGlossaryItem,
-  erlGlossaryColumns,
-  mockErlGlossaryData,
-} from './erl-glossary.model';
+import { ErlGlossaryItem, erlGlossaryColumns } from './erl-glossary.model';
 import { ErlGlossaryService } from './erl-glossary.service';
 
 @Component({
@@ -40,9 +32,6 @@ import { ErlGlossaryService } from './erl-glossary.service';
     NgIcon,
     HlmIcon,
     HlmInputImports,
-    HlmCardImports,
-    BrnSelectImports,
-    HlmSelectImports,
   ],
   providers: [
     provideIcons({
@@ -50,19 +39,20 @@ import { ErlGlossaryService } from './erl-glossary.service';
       lucideFilter,
       lucideUpload,
       lucideRefreshCw,
-      lucideColumns,
       lucidePlus,
     }),
   ],
   templateUrl: './erl-glossary.component.html',
   styleUrl: './erl-glossary.component.scss',
 })
-export class ErlGlossaryComponent {
+export class ErlGlossaryComponent implements OnInit {
   private readonly dialogService = inject(HlmDialogService);
   private readonly erlGlossaryService = inject(ErlGlossaryService);
+
   // Data signals
-  protected readonly data = signal<ErlGlossaryItem[]>(mockErlGlossaryData);
+  protected readonly data = signal<ErlGlossaryItem[]>([]);
   protected readonly columns = signal(erlGlossaryColumns);
+  protected readonly loading = signal<boolean>(false);
 
   // Pagination signals
   protected readonly pageIndex = signal(0);
@@ -82,14 +72,10 @@ export class ErlGlossaryComponent {
 
     return this.data().filter((item) => {
       return (
-        item.keyEvent?.toLowerCase().includes(query) ||
-        item.oqeCategory?.toLowerCase().includes(query) ||
-        item.documentId?.toLowerCase().includes(query) ||
-        item.workItemNo?.toLowerCase().includes(query) ||
-        item.workItemTitle?.toLowerCase().includes(query) ||
-        item.title?.toLowerCase().includes(query) ||
-        item.status?.toLowerCase().includes(query) ||
-        item.location?.toLowerCase().includes(query)
+        item.colmn_header?.toLowerCase().includes(query) ||
+        item.description?.toLowerCase().includes(query) ||
+        item.data_type?.toLowerCase().includes(query) ||
+        item.id?.toString().includes(query)
       );
     });
   });
@@ -107,8 +93,24 @@ export class ErlGlossaryComponent {
   );
 
   ngOnInit(): void {
-    this.erlGlossaryService.getUser().subscribe((user) => {
-      console.log(user);
+    this.loadData();
+  }
+
+  private loadData(): void {
+    this.loading.set(true);
+    this.erlGlossaryService.getERLGlossaryList().subscribe({
+      next: (response: any) => {
+        // Handle API response - adjust based on your API structure
+        const items = response?.data || response || [];
+        this.data.set(Array.isArray(items) ? items : []);
+        this.loading.set(false);
+      },
+      error: (error) => {
+        console.error('Error loading ERL Glossary data:', error);
+        this.loading.set(false);
+        // Optionally set empty array on error
+        this.data.set([]);
+      },
     });
   }
 
@@ -135,8 +137,7 @@ export class ErlGlossaryComponent {
   }
 
   onRefresh(): void {
-    // In a real app, you would reload data from API
-    console.log('Refreshing data...');
+    this.loadData();
   }
 
   onImport(): void {
@@ -147,6 +148,12 @@ export class ErlGlossaryComponent {
   onAddNew(): void {
     this.dialogService.open(ErlGlossaryDetailComponent, {
       contentClass: '!max-w-6xl !w-[35rem]',
+      context: {
+        onSave: () => {
+          // Reload data after successful save
+          this.loadData();
+        },
+      },
     });
   }
 }

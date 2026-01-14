@@ -1,9 +1,8 @@
 <div class="max-h-[90vh] overflow-y-auto">
   <hlm-dialog-header>
-    <h2 hlmDialogTitle>Add New ERL Item</h2>
+    <h2 hlmDialogTitle>Add New ERL Glossary Item</h2>
     <p hlmDialogDescription>
-      Enter all required information for the new ERL (Equipment Readiness List)
-      item.
+      Enter all required information for the new ERL Glossary item.
     </p>
   </hlm-dialog-header>
 
@@ -15,514 +14,151 @@
       </h3>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Key Event -->
-        <div class="space-y-2">
-          <label hlmLabel for="keyEvent">
-            Key Event <span class="text-destructive">*</span>
-          </label>
-          <input
-            hlmInput
-            id="keyEvent"
-            type="text"
-            formControlName="keyEvent"
-            placeholder="Key event or Milestone"
-            [class.border-destructive]="!isFieldValid('keyEvent')"
-          />
-          @if (getFieldError('keyEvent')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("keyEvent") }}
-          </p>
-          }
-        </div>
-
-        <!-- OQE Category -->
-        <div class="space-y-2">
-          <label hlmLabel for="oqeCategory">
-            OQE Category <span class="text-destructive">*</span>
-          </label>
-          <brn-select formControlName="oqeCategory" class="inline-block">
-            <hlm-select-trigger
-              [class.border-destructive]="!isFieldValid('oqeCategory')"
-              class="w-59"
-            >
-              <hlm-select-value placeholder="Select OQE Category" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (option of oqeCategoryOptions; track option) {
-              <hlm-option [value]="option">{{ option }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
-          @if (getFieldError('oqeCategory')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("oqeCategory") }}
-          </p>
-          }
-        </div>
-
-        <!-- Document ID -->
-        <div class="space-y-2">
-          <label hlmLabel for="documentId">
-            Document ID <span class="text-destructive">*</span>
-          </label>
-          <input
-            hlmInput
-            id="documentId"
-            type="text"
-            formControlName="documentId"
-            placeholder="e.g., CFR-1"
-            [class.border-destructive]="!isFieldValid('documentId')"
-          />
-          @if (getFieldError('documentId')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("documentId") }}
-          </p>
-          }
-        </div>
-
-        <!-- Work Item No -->
-        <div class="space-y-2">
-          <label hlmLabel for="workItemNo">
-            Work Item No <span class="text-destructive">*</span>
-          </label>
-          <input
-            hlmInput
-            id="workItemNo"
-            type="text"
-            formControlName="workItemNo"
-            placeholder="e.g., 001-01-001"
-            [class.border-destructive]="!isFieldValid('workItemNo')"
-          />
-          @if (getFieldError('workItemNo')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("workItemNo") }}
-          </p>
-          }
-        </div>
-
-        <!-- Work Item Para -->
-        <div class="space-y-2">
-          <label hlmLabel for="workItemPara">Work Item Para</label>
-          <input
-            hlmInput
-            id="workItemPara"
-            type="text"
-            formControlName="workItemPara"
-            placeholder="e.g., 3.1.1"
-          />
-        </div>
-
-        <!-- Work Item Title -->
-        <div class="space-y-2">
-          <label hlmLabel for="workItemTitle">Work Item Title</label>
-          <input
-            hlmInput
-            id="workItemTitle"
-            type="text"
-            formControlName="workItemTitle"
-            placeholder="Title of master spec item"
-          />
-        </div>
-
-        <!-- Title -->
+        <!-- Column Header -->
         <div class="space-y-2 md:col-span-2">
-          <label hlmLabel for="title">
-            Title <span class="text-destructive">*</span>
+          <label hlmLabel for="colmn_header">
+            Column Header <span class="text-destructive">*</span>
           </label>
           <input
             hlmInput
-            id="title"
+            id="colmn_header"
             type="text"
-            formControlName="title"
-            placeholder="Title of report or activity"
-            [class.border-destructive]="!isFieldValid('title')"
+            formControlName="colmn_header"
+            placeholder="Enter column header name"
+            [class.border-destructive]="!isFieldValid('colmn_header')"
           />
-          @if (getFieldError('title')) {
-          <p class="text-xs text-destructive">{{ getFieldError("title") }}</p>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- Inspection & Location Section -->
-    <div class="space-y-4">
-      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
-        Inspection & Location
-      </h3>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Government Response -->
-        <div class="space-y-2">
-          <label hlmLabel for="governmentResponse">Government Response</label>
-          <input
-            hlmInput
-            id="governmentResponse"
-            type="text"
-            formControlName="governmentResponse"
-            placeholder="Government response for report"
-          />
-        </div>
-
-        <!-- Location -->
-        <div class="space-y-2">
-          <label hlmLabel for="location">Location</label>
-          <input
-            hlmInput
-            id="location"
-            type="text"
-            formControlName="location"
-            placeholder="Location Designation"
-          />
-        </div>
-
-        <!-- Criteria -->
-        <div class="space-y-2">
-          <label hlmLabel for="criteria">Criteria</label>
-          <input
-            hlmInput
-            id="criteria"
-            type="text"
-            formControlName="criteria"
-            placeholder="Criteria of inspection"
-          />
-        </div>
-
-        <!-- NSI No -->
-        <div class="space-y-2">
-          <label hlmLabel for="nsiNo">NSI No</label>
-          <input
-            hlmInput
-            id="nsiNo"
-            type="text"
-            formControlName="nsiNo"
-            placeholder="Navy Standard Item Number"
-          />
-        </div>
-
-        <!-- NSI Para -->
-        <div class="space-y-2">
-          <label hlmLabel for="nsiPara">NSI Para</label>
-          <input
-            hlmInput
-            id="nsiPara"
-            type="text"
-            formControlName="nsiPara"
-            placeholder="NSI Paragraph Number"
-          />
-        </div>
-
-        <!-- Inspection Type -->
-        <div class="space-y-2">
-          <label hlmLabel for="inspectionType">Inspection Type</label>
-          <brn-select formControlName="inspectionType">
-            <hlm-select-trigger class="w-59">
-              <hlm-select-value placeholder="Select Inspection Type" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (option of inspectionTypeOptions; track option) {
-              <hlm-option [value]="option">{{ option }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
-        </div>
-
-        <!-- Inspection Scope -->
-        <div class="space-y-2">
-          <label hlmLabel for="inspectionScope">Inspection Scope</label>
-          <brn-select formControlName="inspectionScope">
-            <hlm-select-trigger class="w-59">
-              <hlm-select-value placeholder="Select Scope" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (option of inspectionScopeOptions; track option) {
-              <hlm-option [value]="option">{{ option }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
-        </div>
-
-        <!-- Inspection Results -->
-        <div class="space-y-2">
-          <label hlmLabel for="inspectionResults">Inspection Results</label>
-          <brn-select formControlName="inspectionResults">
-            <hlm-select-trigger class="w-59">
-              <hlm-select-value placeholder="Select Results" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (option of inspectionResultsOptions; track option) {
-              <hlm-option [value]="option">{{ option }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dates Section -->
-    <div class="space-y-4">
-      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
-        Dates
-      </h3>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Start Date -->
-        <div class="space-y-2">
-          <label hlmLabel for="startDate">Start Date</label>
-          <input
-            hlmInput
-            id="startDate"
-            type="date"
-            formControlName="startDate"
-            [class.border-destructive]="!isFieldValid('startDate')"
-          />
-          @if (getFieldError('startDate')) {
+          @if (getFieldError('colmn_header')) {
           <p class="text-xs text-destructive">
-            {{ getFieldError("startDate") }}
+            {{ getFieldError("colmn_header") }}
           </p>
           }
         </div>
 
-        <!-- Submission Date -->
-        <div class="space-y-2">
-          <label hlmLabel for="submissionDate">Submission Date</label>
-          <input
-            hlmInput
-            id="submissionDate"
-            type="date"
-            formControlName="submissionDate"
-            [class.border-destructive]="!isFieldValid('submissionDate')"
-          />
-          @if (getFieldError('submissionDate')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("submissionDate") }}
-          </p>
-          }
-        </div>
-
-        <!-- Completion Date -->
-        <div class="space-y-2">
-          <label hlmLabel for="completionDate">Completion Date</label>
-          <input
-            hlmInput
-            id="completionDate"
-            type="date"
-            formControlName="completionDate"
-            [class.border-destructive]="!isFieldValid('completionDate')"
-          />
-          @if (getFieldError('completionDate')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("completionDate") }}
-          </p>
-          }
-        </div>
-
-        <!-- Report Due Date -->
-        <div class="space-y-2">
-          <label hlmLabel for="reportDueDate">Report Due Date</label>
-          <input
-            hlmInput
-            id="reportDueDate"
-            type="date"
-            formControlName="reportDueDate"
-            [class.border-destructive]="!isFieldValid('reportDueDate')"
-          />
-          @if (getFieldError('reportDueDate')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("reportDueDate") }}
-          </p>
-          }
-        </div>
-
-        <!-- Baseline Start -->
-        <div class="space-y-2">
-          <label hlmLabel for="baselineStart">Baseline Start</label>
-          <input
-            hlmInput
-            id="baselineStart"
-            type="date"
-            formControlName="baselineStart"
-            [class.border-destructive]="!isFieldValid('baselineStart')"
-          />
-          @if (getFieldError('baselineStart')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("baselineStart") }}
-          </p>
-          }
-        </div>
-
-        <!-- Baseline Finish -->
-        <div class="space-y-2">
-          <label hlmLabel for="baselineFinish">Baseline Finish</label>
-          <input
-            hlmInput
-            id="baselineFinish"
-            type="date"
-            formControlName="baselineFinish"
-            [class.border-destructive]="!isFieldValid('baselineFinish')"
-          />
-          @if (getFieldError('baselineFinish')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("baselineFinish") }}
-          </p>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- Progress & Metrics Section -->
-    <div class="space-y-4">
-      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
-        Progress & Metrics
-      </h3>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Duration (Days) -->
-        <div class="space-y-2">
-          <label hlmLabel for="durationDays">Duration (Days)</label>
-          <input
-            hlmInput
-            id="durationDays"
-            type="number"
-            formControlName="durationDays"
-            placeholder="0"
-            min="0"
-            [class.border-destructive]="!isFieldValid('durationDays')"
-          />
-          @if (getFieldError('durationDays')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("durationDays") }}
-          </p>
-          }
-        </div>
-
-        <!-- Planned % Complete -->
-        <div class="space-y-2">
-          <label hlmLabel for="plannedPercentComplete"
-            >Planned % Complete</label
-          >
-          <input
-            hlmInput
-            id="plannedPercentComplete"
-            type="number"
-            formControlName="plannedPercentComplete"
-            placeholder="0-100"
-            min="0"
-            max="100"
-            [class.border-destructive]="!isFieldValid('plannedPercentComplete')"
-          />
-          @if (getFieldError('plannedPercentComplete')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("plannedPercentComplete") }}
-          </p>
-          }
-        </div>
-
-        <!-- Actual % Complete -->
-        <div class="space-y-2">
-          <label hlmLabel for="actualPercentComplete">Actual % Complete</label>
-          <input
-            hlmInput
-            id="actualPercentComplete"
-            type="number"
-            formControlName="actualPercentComplete"
-            placeholder="0-100"
-            min="0"
-            max="100"
-            [class.border-destructive]="!isFieldValid('actualPercentComplete')"
-          />
-          @if (getFieldError('actualPercentComplete')) {
-          <p class="text-xs text-destructive">
-            {{ getFieldError("actualPercentComplete") }}
-          </p>
-          }
-        </div>
-      </div>
-    </div>
-
-    <!-- Additional Information Section -->
-    <div class="space-y-4">
-      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
-        Additional Information
-      </h3>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- System -->
-        <div class="space-y-2">
-          <label hlmLabel for="system">System</label>
-          <input
-            hlmInput
-            id="system"
-            type="text"
-            formControlName="system"
-            placeholder="System ID from 009-60"
-          />
-        </div>
-
-        <!-- Repair Activity -->
-        <div class="space-y-2">
-          <label hlmLabel for="repairActivity">Repair Activity</label>
-          <input
-            hlmInput
-            id="repairActivity"
-            type="text"
-            formControlName="repairActivity"
-            placeholder="Repair Activity for WAF"
-          />
-        </div>
-
-        <!-- CFR Xref -->
-        <div class="space-y-2">
-          <label hlmLabel for="cfrXref">CFR Xref</label>
-          <input
-            hlmInput
-            id="cfrXref"
-            type="text"
-            formControlName="cfrXref"
-            placeholder="Cross Reference to applicable CFR"
-          />
-        </div>
-
-        <!-- Status -->
-        <div class="space-y-2">
-          <label hlmLabel for="status">Status</label>
-          <brn-select formControlName="status">
-            <hlm-select-trigger class="w-59">
-              <hlm-select-value placeholder="Select Status" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (option of statusOptions; track option) {
-              <hlm-option [value]="option">{{ option }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
-        </div>
-
-        <!-- OQE Cert Status -->
-        <div class="space-y-2">
-          <label hlmLabel for="oqeCertStatus">OQE Cert Status</label>
-          <brn-select formControlName="oqeCertStatus">
-            <hlm-select-trigger class="w-59">
-              <hlm-select-value placeholder="Select Cert Status" />
-            </hlm-select-trigger>
-            <hlm-select-content>
-              @for (option of oqeCertStatusOptions; track option) {
-              <hlm-option [value]="option">{{ option }}</hlm-option>
-              }
-            </hlm-select-content>
-          </brn-select>
-        </div>
-
-        <!-- Remarks -->
+        <!-- Description -->
         <div class="space-y-2 md:col-span-2">
-          <label hlmLabel for="remarks">Remarks</label>
+          <label hlmLabel for="description">
+            Description <span class="text-destructive">*</span>
+          </label>
           <textarea
             hlmInput
-            id="remarks"
+            id="description"
             rows="3"
-            formControlName="remarks"
-            placeholder="Remarks and Comments"
+            formControlName="description"
+            placeholder="Enter description of the column"
+            [class.border-destructive]="!isFieldValid('description')"
             class="resize-none"
           ></textarea>
+          @if (getFieldError('description')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("description") }}
+          </p>
+          }
+        </div>
+
+        <!-- Data Type -->
+        <div class="space-y-2">
+          <label hlmLabel for="data_type">
+            Data Type <span class="text-destructive">*</span>
+          </label>
+          <brn-select formControlName="data_type" class="inline-block">
+            <hlm-select-trigger
+              [class.border-destructive]="!isFieldValid('data_type')"
+              class="w-full"
+            >
+              <hlm-select-value placeholder="Select Data Type" />
+            </hlm-select-trigger>
+            <hlm-select-content>
+              @for (option of dataTypeOptions; track option) {
+              <hlm-option [value]="option">{{ option }}</hlm-option>
+              }
+            </hlm-select-content>
+          </brn-select>
+          @if (getFieldError('data_type')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("data_type") }}
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Log Flags Section -->
+    <div class="space-y-4">
+      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
+        Log Flags
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- IPS -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="ips"
+              class="w-4 h-4 rounded border-gray-300"
+            />
+            <span class="text-sm font-medium">IPS</span>
+          </label>
+        </div>
+
+        <!-- T/I Plan -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="t_i_plan"
+              class="w-4 h-4 rounded border-gray-300"
+            />
+            <span class="text-sm font-medium">T/I Plan</span>
+          </label>
+        </div>
+
+        <!-- CFR Log -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="cfr_log"
+              class="w-4 h-4 rounded border-gray-300"
+            />
+            <span class="text-sm font-medium">CFR Log</span>
+          </label>
+        </div>
+
+        <!-- RR List -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="rr_list"
+              class="w-4 h-4 rounded border-gray-300"
+            />
+            <span class="text-sm font-medium">RR List</span>
+          </label>
+        </div>
+
+        <!-- ITSTP -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="itstp"
+              class="w-4 h-4 rounded border-gray-300"
+            />
+            <span class="text-sm font-medium">ITSTP</span>
+          </label>
+        </div>
+
+        <!-- WAF Log -->
+        <div class="space-y-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              formControlName="waf_log"
+              class="w-4 h-4 rounded border-gray-300"
+            />
+            <span class="text-sm font-medium">WAF Log</span>
+          </label>
         </div>
       </div>
     </div>
