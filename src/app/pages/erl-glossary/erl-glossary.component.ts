@@ -1,6 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  OnDestroy,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   lucideEdit,
@@ -54,7 +63,7 @@ import { ErlGlossaryService } from './erl-glossary.service';
   templateUrl: './erl-glossary.component.html',
   styleUrl: './erl-glossary.component.scss',
 })
-export class ErlGlossaryComponent implements OnInit {
+export class ErlGlossaryComponent implements OnInit, OnDestroy {
   private readonly dialogService = inject(HlmDialogService);
   private readonly erlGlossaryService = inject(ErlGlossaryService);
 
@@ -74,40 +83,47 @@ export class ErlGlossaryComponent implements OnInit {
   // Search/filter signal
   protected readonly searchQuery = signal('');
 
-  // Filtered data
-  protected readonly filteredData = computed(() => {
-    const query = this.searchQuery().toLowerCase().trim();
-    if (!query) return this.data();
+  // Subject for debounced search
+  private readonly searchSubject = new Subject<string>();
+  private readonly destroy$ = new Subject<void>();
 
-    return this.data().filter((item) => {
-      return (
-        item.colmn_header?.toLowerCase().includes(query) ||
-        item.description?.toLowerCase().includes(query) ||
-        item.data_type?.toLowerCase().includes(query) ||
-        item.id?.toString().includes(query)
-      );
-    });
-  });
-
-  // Paginated data
+  // Paginated data (no client-side filtering, data comes from API)
   protected readonly paginatedData = computed(() => {
     const start = this.pageIndex() * this.pageSize();
     const end = start + this.pageSize();
-    return this.filteredData().slice(start, end);
+    return this.data().slice(start, end);
   });
 
-  // Computed total for filtered results
-  protected readonly filteredTotalCount = computed(
-    () => this.filteredData().length
-  );
+  // Computed total for results
+  protected readonly filteredTotalCount = computed(() => this.data().length);
 
   ngOnInit(): void {
+    // Subscribe to debounced search
+    this.searchSubject
+      .pipe(
+        debounceTime(500), // Wait 500ms after user stops typing
+        distinctUntilChanged(), // Only emit if value changed
+        takeUntil(this.destroy$)
+      )
+      .subscribe((query) => {
+        this.loadData(query);
+      });
+
+    // Load initial data
     this.loadData();
   }
 
-  private loadData(): void {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.searchSubject.complete();
+  }
+
+  private loadData(searchQuery?: string): void {
     this.loading.set(true);
-    this.erlGlossaryService.getERLGlossaryList().subscribe({
+    // Use searchQuery if provided, otherwise use the signal value
+    const query = searchQuery !== undefined ? searchQuery : this.searchQuery();
+    this.erlGlossaryService.getERLGlossaryList(query || undefined).subscribe({
       next: (response: any) => {
         // Handle API response - adjust based on your API structure
         const items = response?.items || response || [];
@@ -141,8 +157,11 @@ export class ErlGlossaryComponent implements OnInit {
 
   onSearchChange(event: Event): void {
     const target = event.target as HTMLInputElement;
-    this.searchQuery.set(target.value);
+    const query = target.value;
+    this.searchQuery.set(query);
     this.pageIndex.set(0); // Reset to first page on search
+    // Push to subject for debounced API call
+    this.searchSubject.next(query);
   }
 
   onRefresh(): void {
@@ -189,16 +208,18 @@ export class ErlGlossaryComponent implements OnInit {
       type: 'danger',
       onConfirm: () => {
         // Perform the delete action when confirmed
-        this.erlGlossaryService.deleteERLGlossaryItem(item.id as number || 0).subscribe({
-          next: (response) => {
-            console.log('ERL Glossary item deleted successfully:', response);
-            this.loadData();
-          },
-          error: (error) => {
-            console.error('Error deleting ERL Glossary item:', error);
-            // TODO: Show error message to user
-          },
-        });
+        this.erlGlossaryService
+          .deleteERLGlossaryItem((item.id as number) || 0)
+          .subscribe({
+            next: (response) => {
+              console.log('ERL Glossary item deleted successfully:', response);
+              this.loadData();
+            },
+            error: (error) => {
+              console.error('Error deleting ERL Glossary item:', error);
+              // TODO: Show error message to user
+            },
+          });
       },
     };
 

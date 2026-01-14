@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../../core/services/http.service';
 import { ErlGlossaryItem } from './erl-glossary.model';
+import { HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -29,16 +30,30 @@ export class ErlGlossaryService {
    * Get user
    * @returns Observable with user response
    */
-  getUser(): Observable<any> {
-    return this.http.getDataFromServer(this.userURL());
+  getUser(colmn_header?: string): Observable<any> {
+    let params = new HttpParams();
+    if (colmn_header) {
+      params = params.set('colmn_header', colmn_header);
+    }
+    return this.http.getDataFromServer(
+      this.getERLGlossaryURL() + '?' + params.toString()
+    );
   }
 
   /**
    * Get ERL Glossary List
+   * @param colmn_header Optional column header to filter by
    * @returns Observable with ERL Glossary List response
    */
-  getERLGlossaryList(): Observable<[]> {
-    return this.http.getDataFromServer(this.getERLGlossaryURL());
+  getERLGlossaryList(colmn_header?: string): Observable<[]> {
+    let params = new HttpParams();
+    if (colmn_header && colmn_header.trim()) {
+      params = params.set('colmn_header', colmn_header.trim());
+    }
+    const url = params.toString()
+      ? this.getERLGlossaryURL() + '?' + params.toString()
+      : this.getERLGlossaryURL();
+    return this.http.getDataFromServer(url);
   }
 
   /**
@@ -56,6 +71,8 @@ export class ErlGlossaryService {
    * @returns Observable with ERL Glossary Item response
    */
   deleteERLGlossaryItem(id: number): Observable<any> {
-    return this.http.deleteDataFromServer(this.deleteERLGlossaryURL() + '?id=' + id);
+    return this.http.deleteDataFromServer(
+      this.deleteERLGlossaryURL() + '?id=' + id
+    );
   }
 }
