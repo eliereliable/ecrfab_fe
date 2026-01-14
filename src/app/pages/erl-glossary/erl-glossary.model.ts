@@ -80,4 +80,10 @@ export const erlGlossaryColumns: ColumnDef<ErlGlossaryItem>[] = [
     cell: (info) => formatBoolean(info.getValue() as boolean | null),
     enableSorting: true,
   },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: () => '', // Cell content will be handled by template
+    enableSorting: false,
+  },
 ];

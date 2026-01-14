@@ -3,10 +3,12 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
+  lucideEdit,
   lucideFilter,
   lucidePlus,
   lucideRefreshCw,
   lucideSearch,
+  lucideTrash2,
   lucideUpload,
 } from '@ng-icons/lucide';
 import { SortingState } from '@tanstack/angular-table';
@@ -17,6 +19,11 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmDialogService } from '@libs/ui/dialog';
 import { DataGridComponent } from '../../shared/components/data-grid/data-grid.component';
 import { ErlGlossaryDetailComponent } from './erl-glossary-detail/erl-glossary-detail.component';
+import {
+  ConfirmationDialogComponent,
+  ConfirmationDialogContext,
+  ConfirmationDialogResult,
+} from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 import { ErlGlossaryItem, erlGlossaryColumns } from './erl-glossary.model';
 import { ErlGlossaryService } from './erl-glossary.service';
@@ -40,6 +47,8 @@ import { ErlGlossaryService } from './erl-glossary.service';
       lucideUpload,
       lucideRefreshCw,
       lucidePlus,
+      lucideEdit,
+      lucideTrash2,
     }),
   ],
   templateUrl: './erl-glossary.component.html',
@@ -149,11 +158,52 @@ export class ErlGlossaryComponent implements OnInit {
     this.dialogService.open(ErlGlossaryDetailComponent, {
       contentClass: '!max-w-6xl !w-[35rem]',
       context: {
+        item: null, // New item
         onSave: () => {
           // Reload data after successful save
           this.loadData();
         },
       },
+    });
+  }
+
+  onEdit(item: ErlGlossaryItem): void {
+    this.dialogService.open(ErlGlossaryDetailComponent, {
+      contentClass: '!max-w-6xl !w-[35rem]',
+      context: {
+        item: item, // Existing item to edit
+        onSave: () => {
+          // Reload data after successful save
+          this.loadData();
+        },
+      },
+    });
+  }
+
+  onDelete(item: ErlGlossaryItem): void {
+    const dialogContext: ConfirmationDialogContext = {
+      title: 'Delete ERL Glossary Item',
+      message: `Are you sure you want to delete "${item.colmn_header}"? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      type: 'danger',
+      onConfirm: () => {
+        // Perform the delete action when confirmed
+        this.erlGlossaryService.deleteERLGlossaryItem(item.id).subscribe({
+          next: (response) => {
+            console.log('ERL Glossary item deleted successfully:', response);
+            this.loadData();
+          },
+          error: (error) => {
+            console.error('Error deleting ERL Glossary item:', error);
+            // TODO: Show error message to user
+          },
+        });
+      },
+    };
+
+    this.dialogService.open(ConfirmationDialogComponent, {
+      context: dialogContext,
     });
   }
 }

@@ -73,8 +73,34 @@
     [pageSize]="pageSize()"
     [totalCount]="filteredTotalCount()"
     [sorting]="sorting()"
+    [actionsTemplate]="actionsTemplate"
     (pageChange)="onPageChange($event)"
     (pageSizeChange)="onPageSizeChange($event)"
     (sortingChange)="onSortingChange($event)"
   />
 </div>
+
+<ng-template #actionsTemplate let-item>
+  <div class="flex items-center gap-2">
+    <button
+      hlmBtn
+      variant="ghost"
+      size="sm"
+      class="h-8 w-8 p-0"
+      (click)="onEdit(item)"
+      title="Edit"
+    >
+      <ng-icon hlm name="lucideEdit" size="16px" />
+    </button>
+    <button
+      hlmBtn
+      variant="ghost"
+      size="sm"
+      class="h-8 w-8 p-0 text-destructive hover:text-destructive"
+      (click)="onDelete(item)"
+      title="Delete"
+    >
+      <ng-icon hlm name="lucideTrash2" size="16px" />
+    </button>
+  </div>
+</ng-template>

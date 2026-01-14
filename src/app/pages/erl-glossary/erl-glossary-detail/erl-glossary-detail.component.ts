@@ -58,10 +58,14 @@ export class ErlGlossaryDetailComponent {
   private readonly erlGlossaryService = inject(ErlGlossaryService);
   private readonly dialogRef = inject(BrnDialogRef, { optional: true });
   private readonly dialogContext = injectBrnDialogContext<{
+    item?: ErlGlossaryItem | null;
     onSave?: () => void;
   }>({
     optional: true,
   });
+
+  // Check if we're in edit mode
+  readonly isEditMode = computed(() => !!this.dialogContext?.item);
 
   // Form group with all controls
   readonly form: FormGroup = this.fb.group({
@@ -75,6 +79,24 @@ export class ErlGlossaryDetailComponent {
     itstp: [false],
     waf_log: [false],
   });
+
+  constructor() {
+    // Populate form if editing existing item
+    const item = this.dialogContext?.item;
+    if (item) {
+      this.form.patchValue({
+        colmn_header: item.colmn_header || '',
+        description: item.description || '',
+        data_type: item.data_type || '',
+        ips: item.ips || false,
+        t_i_plan: item.t_i_plan || false,
+        cfr_log: item.cfr_log || false,
+        rr_list: item.rr_list || false,
+        itstp: item.itstp || false,
+        waf_log: item.waf_log || false,
+      });
+    }
+  }
 
   // Computed form validity
   readonly isFormValid = computed(() => this.form.valid);
@@ -131,8 +153,9 @@ export class ErlGlossaryDetailComponent {
 
     const formValue = this.form.value;
 
+    const existingItem = this.dialogContext?.item;
     const item: ErlGlossaryItem = {
-      id: 0, // Will be set by backend
+      id: existingItem?.id || 0,
       colmn_header: formValue.colmn_header,
       description: formValue.description,
       data_type: formValue.data_type,
@@ -144,9 +167,15 @@ export class ErlGlossaryDetailComponent {
       waf_log: formValue.waf_log || false,
     };
 
+    // Use add method for both create and update (backend handles it based on ID)
     this.erlGlossaryService.addERLGlossaryItem(item).subscribe({
       next: (response) => {
-        console.log('ERL Glossary item saved successfully:', response);
+        console.log(
+          `ERL Glossary item ${
+            existingItem ? 'updated' : 'saved'
+          } successfully:`,
+          response
+        );
         // Call callback if provided (to reload data in parent)
         this.dialogContext?.onSave?.();
         this.dialogRef?.close();

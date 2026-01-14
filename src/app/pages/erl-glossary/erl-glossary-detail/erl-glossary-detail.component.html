@@ -1,8 +1,14 @@
 <div class="max-h-[90vh] overflow-y-auto">
   <hlm-dialog-header>
-    <h2 hlmDialogTitle>Add New ERL Glossary Item</h2>
+    <h2 hlmDialogTitle>
+      {{ isEditMode() ? 'Edit ERL Glossary Item' : 'Add New ERL Glossary Item' }}
+    </h2>
     <p hlmDialogDescription>
-      Enter all required information for the new ERL Glossary item.
+      {{
+        isEditMode()
+          ? 'Update the information for this ERL Glossary item.'
+          : 'Enter all required information for the new ERL Glossary item.'
+      }}
     </p>
   </hlm-dialog-header>
 
