@@ -101,7 +101,7 @@ export class ErlGlossaryComponent implements OnInit, OnDestroy {
     // Subscribe to debounced search
     this.searchSubject
       .pipe(
-        debounceTime(500), // Wait 500ms after user stops typing
+        debounceTime(1000), // Wait 1000ms after user stops typing
         distinctUntilChanged(), // Only emit if value changed
         takeUntil(this.destroy$)
       )
