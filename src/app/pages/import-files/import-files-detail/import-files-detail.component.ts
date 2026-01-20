@@ -76,7 +76,7 @@ export class ImportFilesDetailComponent {
   // Categories and Projects signals
   readonly categories = signal<Categories[]>([]);
   readonly projects = signal<Projects[]>([]);
-  readonly selectedFile = signal<File | null>(null);
+  readonly selectedFile = signal<File>(new File([], ''));
   readonly selectedFileName = signal<string>('');
   readonly fileExtensionError = signal<string>('');
 
@@ -121,7 +121,7 @@ export class ImportFilesDetailComponent {
 
     // Listen for category changes and clear file selection
     this.form.get('CategoryId')?.valueChanges.subscribe(() => {
-      this.selectedFile.set(null);
+      this.selectedFile.set(new File([], ''));
       this.selectedFileName.set('');
       this.fileExtensionError.set('');
     });
@@ -231,7 +231,7 @@ export class ImportFilesDetailComponent {
           this.fileExtensionError.set(
             `Invalid file type. Expected ${normalizedExt} file.`
           );
-          this.selectedFile.set(null);
+          this.selectedFile.set(new File([], ''));
           this.selectedFileName.set('');
           // Clear the input
           input.value = '';
@@ -277,7 +277,7 @@ export class ImportFilesDetailComponent {
 
     const item: ImportFiles = {
       CategoryId: formValue.CategoryId,
-      File: this.selectedFile()?.name || '',
+      File: this.selectedFile(),
       ProjectId: formValue.ProjectId,
       FileDate: new Date(formValue.FileDate),
     };
@@ -291,7 +291,7 @@ export class ImportFilesDetailComponent {
         this.dialogContext?.onSave?.();
         this.dialogRef?.close();
         this.form.reset();
-        this.selectedFile.set(null);
+        this.selectedFile.set(new File([], ''));
         this.selectedFileName.set('');
       },
       error: (error) => {
@@ -304,7 +304,7 @@ export class ImportFilesDetailComponent {
   onCancel(): void {
     // Dialog will close automatically via brnDialogClose
     this.form.reset();
-    this.selectedFile.set(null);
+    this.selectedFile.set(new File([], ''));
     this.selectedFileName.set('');
   }
 }

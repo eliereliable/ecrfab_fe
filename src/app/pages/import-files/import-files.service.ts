@@ -60,6 +60,6 @@ export class ImportFilesService {
      * @returns Observable with import files response
      */
     deleteImportFiles(id: number): Observable<any> {
-        return this.http.deleteDataFromServer(this.deleteImportFilesURL() + '/' + id);
+        return this.http.deleteDataFromServer(this.deleteImportFilesURL() + id);
     }
 }

@@ -2,7 +2,7 @@ import { ColumnDef } from '@tanstack/angular-table';
 
 export interface ImportFiles {
     CategoryId: number;
-    File: string;
+    File: File;
     ProjectId: string;
     FileDate: Date;
 }
@@ -15,14 +15,15 @@ export interface ImportFilesResponse {
 }
 
 export interface Files {
-    file_name: string;
+    id: number;
     category_id: number;
-    project_id: string;
     file_date: Date;
-    imported_by: number;
+    file_name: string;
     imported_at: Date;
-    is_failed_import: boolean;
+    imported_by: number;
     is_deleted: boolean;
+    is_failed_import: boolean;
+    project_id: string;
 }
 
 export interface Categories {

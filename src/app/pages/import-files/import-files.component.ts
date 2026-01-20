@@ -178,19 +178,6 @@ export class ImportFilesComponent implements OnInit, OnDestroy {
     });
   }
 
-  onEdit(item: Files): void {
-    this.dialogService.open(ImportFilesDetailComponent, {
-      contentClass: '!max-w-6xl !w-[35rem]',
-      context: {
-        item: item, // Existing item to edit
-        onSave: () => {
-          // Reload data after successful save
-          this.loadData();
-        },
-      },
-    });
-  }
-
   onDelete(item: Files): void {
     const dialogContext: ConfirmationDialogContext = {
       title: 'Delete Import File',
@@ -201,7 +188,7 @@ export class ImportFilesComponent implements OnInit, OnDestroy {
       onConfirm: () => {
         // Perform the delete action when confirmed
         this.importFilesService
-          .deleteImportFiles(item.category_id || 0)
+          .deleteImportFiles(item.id || 0)
           .subscribe({
             next: (response) => {
               console.log('Import file deleted successfully:', response);
