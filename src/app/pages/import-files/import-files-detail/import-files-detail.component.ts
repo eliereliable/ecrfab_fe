@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -79,10 +80,23 @@ export class ImportFilesDetailComponent {
   readonly selectedFileName = signal<string>('');
   readonly fileExtensionError = signal<string>('');
 
+  // Form group with all controls
+  readonly form: FormGroup = this.fb.group({
+    CategoryId: [null, [Validators.required]],
+    ProjectId: ['', [Validators.required]],
+    FileDate: ['', [Validators.required]],
+  });
+
+  // Convert form value to signal so computed can react to changes
+  readonly selectedCategoryId = toSignal(
+    this.form.get('CategoryId')!.valueChanges,
+    { initialValue: this.form.get('CategoryId')?.value }
+  );
+
   // Get selected category
   readonly selectedCategory = computed(() => {
-    const categoryId = this.form.get('CategoryId')?.value;
-    if (!categoryId) return null;
+    const categoryId = this.selectedCategoryId();
+    if (!categoryId && categoryId !== 0) return null;
     return this.categories().find(cat => cat.id === categoryId) || null;
   });
 
@@ -98,13 +112,6 @@ export class ImportFilesDetailComponent {
     if (!extension) return '*';
     // Handle extensions like '.xlsx' or 'xlsx'
     return extension.startsWith('.') ? extension : `.${extension}`;
-  });
-
-  // Form group with all controls
-  readonly form: FormGroup = this.fb.group({
-    CategoryId: [null, [Validators.required]],
-    ProjectId: ['', [Validators.required]],
-    FileDate: ['', [Validators.required]],
   });
 
   constructor() {
