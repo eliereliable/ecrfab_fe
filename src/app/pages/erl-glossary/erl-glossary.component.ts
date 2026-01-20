@@ -21,6 +21,7 @@ import {
   lucideUpload,
 } from '@ng-icons/lucide';
 import { SortingState } from '@tanstack/angular-table';
+import { toast } from 'ngx-sonner';
 
 import { HlmIcon } from '@libs/ui/icon';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -213,11 +214,12 @@ export class ErlGlossaryComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (response) => {
               console.log('ERL Glossary item deleted successfully:', response);
+              toast.success('ERL Glossary item deleted successfully');
               this.loadData();
             },
             error: (error) => {
               console.error('Error deleting ERL Glossary item:', error);
-              // TODO: Show error message to user
+              toast.error('Failed to delete ERL Glossary item. Please try again.');
             },
           });
       },

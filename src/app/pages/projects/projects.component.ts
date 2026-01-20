@@ -20,6 +20,7 @@ import {
   lucideUpload,
 } from '@ng-icons/lucide';
 import { SortingState } from '@tanstack/angular-table';
+import { toast } from 'ngx-sonner';
 
 import { HlmIcon } from '@libs/ui/icon';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -211,11 +212,12 @@ export class ProjectsComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (response) => {
               console.log('Project deleted successfully:', response);
+              toast.success('Project deleted successfully');
               this.loadData();
             },
             error: (error) => {
               console.error('Error deleting project:', error);
-              // TODO: Show error message to user
+              toast.error('Failed to delete project. Please try again.');
             },
           });
       },

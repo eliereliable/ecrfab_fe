@@ -21,6 +21,7 @@ import {
   HlmDialogDescription,
   HlmDialogFooter,
 } from '@libs/ui/dialog';
+import { toast } from 'ngx-sonner';
 
 import { ErlGlossaryItem } from '../erl-glossary.model';
 import { ErlGlossaryService } from '../erl-glossary.service';
@@ -148,6 +149,7 @@ export class ErlGlossaryDetailComponent {
       Object.keys(this.form.controls).forEach((key) => {
         this.form.get(key)?.markAsTouched();
       });
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -176,6 +178,7 @@ export class ErlGlossaryDetailComponent {
           } successfully:`,
           response
         );
+        toast.success(`ERL Glossary item ${existingItem ? 'updated' : 'created'} successfully`);
         // Call callback if provided (to reload data in parent)
         this.dialogContext?.onSave?.();
         this.dialogRef?.close();
@@ -183,7 +186,7 @@ export class ErlGlossaryDetailComponent {
       },
       error: (error) => {
         console.error('Error saving ERL Glossary item:', error);
-        // TODO: Show error message to user
+        toast.error('Failed to save ERL Glossary item. Please try again.');
       },
     });
   }

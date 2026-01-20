@@ -21,6 +21,7 @@ import {
   lucideUpload,
 } from '@ng-icons/lucide';
 import { SortingState } from '@tanstack/angular-table';
+import { toast } from 'ngx-sonner';
 
 import { HlmIcon } from '@libs/ui/icon';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -204,11 +205,12 @@ export class ImportFilesComponent implements OnInit, OnDestroy {
           .subscribe({
             next: (response) => {
               console.log('Import file deleted successfully:', response);
+              toast.success('Import file deleted successfully');
               this.loadData();
             },
             error: (error) => {
               console.error('Error deleting import file:', error);
-              // TODO: Show error message to user
+              toast.error('Failed to delete import file. Please try again.');
             },
           });
       },

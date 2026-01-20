@@ -19,6 +19,7 @@ import { BrnDialogClose, BrnDialogRef } from '@spartan-ng/brain/dialog';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
+import { toast } from 'ngx-sonner';
 
 import { injectBrnDialogContext } from '@spartan-ng/brain/dialog';
 import { Projects } from '../projects.model';
@@ -115,6 +116,7 @@ export class ProjectsDetailComponent {
       Object.keys(this.form.controls).forEach((key) => {
         this.form.get(key)?.markAsTouched();
       });
+      toast.error('Please fill in all required fields');
       return;
     }
 
@@ -131,6 +133,7 @@ export class ProjectsDetailComponent {
           `Project ${this.isEditMode() ? 'updated' : 'saved'} successfully:`,
           response
         );
+        toast.success(`Project ${this.isEditMode() ? 'updated' : 'created'} successfully`);
         // Call callback if provided (to reload data in parent)
         this.dialogContext?.onSave?.();
         this.dialogRef?.close();
@@ -138,7 +141,7 @@ export class ProjectsDetailComponent {
       },
       error: (error) => {
         console.error('Error saving project:', error);
-        // TODO: Show error message to user
+        toast.error('Failed to save project. Please try again.');
       },
     });
   }

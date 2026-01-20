@@ -21,6 +21,7 @@ import {
   HlmDialogDescription,
   HlmDialogFooter,
 } from '@libs/ui/dialog';
+import { toast } from 'ngx-sonner';
 
 import { Files, Categories, ImportFiles } from '../import-files.model';
 import { ImportFilesService } from '../import-files.service';
@@ -76,6 +77,28 @@ export class ImportFilesDetailComponent {
   readonly projects = signal<Projects[]>([]);
   readonly selectedFile = signal<File | null>(null);
   readonly selectedFileName = signal<string>('');
+  readonly fileExtensionError = signal<string>('');
+
+  // Get selected category
+  readonly selectedCategory = computed(() => {
+    const categoryId = this.form.get('CategoryId')?.value;
+    if (!categoryId) return null;
+    return this.categories().find(cat => cat.id === categoryId) || null;
+  });
+
+  // Get allowed file extension from selected category
+  readonly allowedExtension = computed(() => {
+    const category = this.selectedCategory();
+    return category?.file_Extension || null;
+  });
+
+  // Get accept attribute for file input
+  readonly fileInputAccept = computed(() => {
+    const extension = this.allowedExtension();
+    if (!extension) return '*';
+    // Handle extensions like '.xlsx' or 'xlsx'
+    return extension.startsWith('.') ? extension : `.${extension}`;
+  });
 
   // Form group with all controls
   readonly form: FormGroup = this.fb.group({
@@ -88,6 +111,13 @@ export class ImportFilesDetailComponent {
     // Load categories and projects
     this.loadCategories();
     this.loadProjects();
+
+    // Listen for category changes and clear file selection
+    this.form.get('CategoryId')?.valueChanges.subscribe(() => {
+      this.selectedFile.set(null);
+      this.selectedFileName.set('');
+      this.fileExtensionError.set('');
+    });
 
     // Populate form if editing existing item
     const item = this.dialogContext?.item;
@@ -142,7 +172,11 @@ export class ImportFilesDetailComponent {
   }
 
   // Computed form validity
-  readonly isFormValid = computed(() => this.form.valid && this.selectedFile() !== null);
+  readonly isFormValid = computed(() =>
+    this.form.valid &&
+    this.selectedFile() !== null &&
+    this.fileExtensionError() === ''
+  );
 
   // Helper methods to check field validity
   isFieldValid(fieldName: string): boolean {
@@ -178,6 +212,28 @@ export class ImportFilesDetailComponent {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+      const allowedExt = this.allowedExtension();
+
+      // Validate file extension if category has one
+      if (allowedExt) {
+        const fileName = file.name.toLowerCase();
+        const expectedExt = allowedExt.toLowerCase();
+        const normalizedExt = expectedExt.startsWith('.') ? expectedExt : `.${expectedExt}`;
+
+        if (!fileName.endsWith(normalizedExt)) {
+          this.fileExtensionError.set(
+            `Invalid file type. Expected ${normalizedExt} file.`
+          );
+          this.selectedFile.set(null);
+          this.selectedFileName.set('');
+          // Clear the input
+          input.value = '';
+          return;
+        }
+      }
+
+      // Valid file
+      this.fileExtensionError.set('');
       this.selectedFile.set(file);
       this.selectedFileName.set(file.name);
     }
@@ -194,12 +250,19 @@ export class ImportFilesDetailComponent {
       Object.keys(this.form.controls).forEach((key) => {
         this.form.get(key)?.markAsTouched();
       });
+      toast.error('Please fill in all required fields');
       return;
     }
 
     if (!this.selectedFile() && !this.isEditMode()) {
       // File is required for new imports
-      alert('Please select a file to import');
+      toast.error('Please select a file to import');
+      return;
+    }
+
+    if (this.fileExtensionError()) {
+      // File extension validation failed
+      toast.error(this.fileExtensionError());
       return;
     }
 
@@ -216,6 +279,7 @@ export class ImportFilesDetailComponent {
     this.importFilesService.runImportFiles(item).subscribe({
       next: (response) => {
         console.log('Import file saved successfully:', response);
+        toast.success('File imported successfully');
         // Call callback if provided (to reload data in parent)
         this.dialogContext?.onSave?.();
         this.dialogRef?.close();
@@ -225,7 +289,7 @@ export class ImportFilesDetailComponent {
       },
       error: (error) => {
         console.error('Error saving import file:', error);
-        // TODO: Show error message to user
+        toast.error('Failed to import file. Please try again.');
       },
     });
   }
