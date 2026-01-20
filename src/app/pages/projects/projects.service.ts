@@ -10,7 +10,7 @@ import { Projects, ProjectsParams, ProjectsResponse } from './projects.model';
 export class ProjectsService {
     http = inject(HttpService);
 
-    projectsController = signal<string>('Projects/');
+    projectsController = signal<string>('Project/');
     getProjectsURL = signal<string>(
         this.projectsController() + 'GetProject'
     );
@@ -27,11 +27,17 @@ export class ProjectsService {
      */
     getProjects(params: ProjectsParams): Observable<ProjectsResponse> {
         let httpParams = new HttpParams();
-        httpParams = httpParams.set('id', params.id || '');
-        httpParams = httpParams.set('project_name', params.project_name || '');
+        if (params.id) {
+            httpParams = httpParams.set('id', params.id);
+        }
+        if (params.project_name) {
+            httpParams = httpParams.set('project_name', params.project_name);
+        }
         httpParams = httpParams.set('PageNumber', params.PageNumber.toString());
         httpParams = httpParams.set('PageSize', params.PageSize.toString());
-        httpParams = httpParams.set('Sorting', params.Sorting || '');
+        if (params.Sorting) {
+            httpParams = httpParams.set('Sorting', params.Sorting);
+        }
         return this.http.getDataFromServer(this.getProjectsURL() + '?' + httpParams.toString());
     }
 
