@@ -1,0 +1,66 @@
+<div class="max-h-[90vh] overflow-y-auto">
+  <hlm-dialog-header>
+    <h2 hlmDialogTitle>
+      {{ isEditMode() ? 'Edit Project' : 'Add New Project' }}
+    </h2>
+    <p hlmDialogDescription>
+      {{
+        isEditMode()
+          ? 'Update the information for this project.'
+          : 'Enter all required information for the new project.'
+      }}
+    </p>
+  </hlm-dialog-header>
+
+  <form [formGroup]="form" class="space-y-6 py-4" (ngSubmit)="onSave()">
+    <!-- Project Information Section -->
+    <div class="space-y-4">
+      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
+        Project Information
+      </h3>
+
+      <div class="grid grid-cols-1 gap-4">
+        <!-- Project Name -->
+        <div class="space-y-2">
+          <label hlmLabel for="project_name">
+            Project Name <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="project_name"
+            type="text"
+            formControlName="project_name"
+            placeholder="Enter project name"
+            [class.border-destructive]="!isFieldValid('project_name')"
+          />
+          @if (getFieldError('project_name')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("project_name") }}
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <hlm-dialog-footer>
+      <button
+        hlmBtn
+        type="button"
+        variant="outline"
+        brnDialogClose
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        hlmBtn
+        type="submit"
+        variant="default"
+        [disabled]="!isFormValid()"
+      >
+        <ng-icon hlm name="lucideSave" size="16px" />
+        <span>Save</span>
+      </button>
+    </hlm-dialog-footer>
+  </form>
+</div>

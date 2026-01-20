@@ -69,6 +69,20 @@ export const routes: Routes = [
           import('./pages/msp/msp.component').then((m) => m.MspComponent),
       },
       {
+        path: 'import-files',
+        loadComponent: () =>
+          import('./pages/import-files/import-files.component').then(
+            (m) => m.ImportFilesComponent
+          ),
+      },
+      {
+        path: 'projects',
+        loadComponent: () =>
+          import('./pages/projects/projects.component').then(
+            (m) => m.ProjectsComponent
+          ),
+      },
+      {
         path: '',
         redirectTo: 'erl-glossary',
         pathMatch: 'full',

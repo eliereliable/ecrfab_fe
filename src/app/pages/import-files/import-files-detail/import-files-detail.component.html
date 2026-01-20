@@ -1,0 +1,184 @@
+<div class="max-h-[90vh] overflow-y-auto">
+  <hlm-dialog-header>
+    <h2 hlmDialogTitle>
+      {{ isEditMode() ? 'Edit Import File' : 'Import New File' }}
+    </h2>
+    <p hlmDialogDescription>
+      {{
+        isEditMode()
+          ? 'Update the information for this import file.'
+          : 'Select a file and provide import details.'
+      }}
+    </p>
+  </hlm-dialog-header>
+
+  <form [formGroup]="form" class="space-y-6 py-4" (ngSubmit)="onSave()">
+    <!-- File Upload Section -->
+    <div class="space-y-4">
+      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
+        File Upload
+      </h3>
+
+      <div class="grid grid-cols-1 gap-4">
+        <!-- File Input -->
+        <div class="space-y-2">
+          <label hlmLabel for="fileInput">
+            File <span class="text-destructive">*</span>
+          </label>
+          <div class="flex gap-2">
+            <input
+              hlmInput
+              id="fileInput"
+              type="file"
+              class="hidden"
+              (change)="onFileSelected($event)"
+            />
+            <input
+              hlmInput
+              type="text"
+              readonly
+              [value]="selectedFileName()"
+              placeholder="No file selected"
+              class="flex-1 cursor-pointer"
+              (click)="triggerFileInput()"
+            />
+            <button
+              hlmBtn
+              type="button"
+              variant="outline"
+              size="sm"
+              class="flex items-center gap-2 shrink-0"
+              (click)="triggerFileInput()"
+            >
+              <ng-icon hlm name="lucideUpload" size="16px" />
+              <span>Browse</span>
+            </button>
+          </div>
+          @if (!selectedFileName() && !isEditMode()) {
+          <p class="text-xs text-muted-foreground">
+            Please select a file to import
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Details Section -->
+    <div class="space-y-4">
+      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
+        Import Details
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Category Select -->
+        <div class="space-y-2">
+          <label hlmLabel for="CategoryId">
+            Category <span class="text-destructive">*</span>
+          </label>
+          <brn-select formControlName="CategoryId" class="w-full">
+            <hlm-select-trigger
+              [class.border-destructive]="!isFieldValid('CategoryId')"
+              class="w-full"
+            >
+              <hlm-select-value placeholder="Select Category" />
+            </hlm-select-trigger>
+            <hlm-select-content>
+              @for (category of categories(); track category.id) {
+              <hlm-option [value]="category.id">
+                {{ category.category_Name }}
+                @if (category.file_Extension) {
+                <span class="text-muted-foreground text-xs">
+                  ({{ category.file_Extension }})
+                </span>
+                }
+              </hlm-option>
+              }
+              @if (categories().length === 0) {
+              <div class="px-2 py-1 text-xs text-muted-foreground">
+                No categories available
+              </div>
+              }
+            </hlm-select-content>
+          </brn-select>
+          @if (getFieldError('CategoryId')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("CategoryId") }}
+          </p>
+          }
+        </div>
+
+        <!-- Project Select -->
+        <div class="space-y-2">
+          <label hlmLabel for="ProjectId">
+            Project <span class="text-destructive">*</span>
+          </label>
+          <brn-select formControlName="ProjectId" class="w-full">
+            <hlm-select-trigger
+              [class.border-destructive]="!isFieldValid('ProjectId')"
+              class="w-full"
+            >
+              <hlm-select-value placeholder="Select Project" />
+            </hlm-select-trigger>
+            <hlm-select-content>
+              @for (project of projects(); track project.id) {
+              <hlm-option [value]="project.id">
+                {{ project.project_name }}
+              </hlm-option>
+              }
+              @if (projects().length === 0) {
+              <div class="px-2 py-1 text-xs text-muted-foreground">
+                No projects available
+              </div>
+              }
+            </hlm-select-content>
+          </brn-select>
+          @if (getFieldError('ProjectId')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("ProjectId") }}
+          </p>
+          }
+        </div>
+
+        <!-- File Date -->
+        <div class="space-y-2">
+          <label hlmLabel for="FileDate">
+            File Date <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="FileDate"
+            type="date"
+            formControlName="FileDate"
+            [class.border-destructive]="!isFieldValid('FileDate')"
+          />
+          @if (getFieldError('FileDate')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("FileDate") }}
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+
+    <hlm-dialog-footer>
+      <button
+        hlmBtn
+        type="button"
+        variant="outline"
+        brnDialogClose
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        hlmBtn
+        type="submit"
+        variant="default"
+        [disabled]="!isFormValid()"
+      >
+        <ng-icon hlm name="lucideSave" size="16px" />
+        <span>{{ isEditMode() ? 'Update' : 'Import' }}</span>
+      </button>
+    </hlm-dialog-footer>
+  </form>
+</div>

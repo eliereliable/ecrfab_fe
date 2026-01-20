@@ -31,6 +31,7 @@ import {
   lucideLayoutDashboard,
   lucideSettings,
   lucideShip,
+  lucideUpload,
   lucideUsers,
   lucideWrench,
 } from '@ng-icons/lucide';
@@ -78,6 +79,7 @@ export interface NavItem {
       lucideCalendar,
       lucideChevronDown,
       lucideChevronRight,
+      lucideUpload,
     }),
   ],
 })
@@ -126,6 +128,16 @@ export class AppSidebarComponent {
       label: 'MSP',
       icon: 'lucideCalendar',
       route: '/app/msp',
+    },
+    {
+      label: 'Import Files',
+      icon: 'lucideUpload',
+      route: '/app/import-files',
+    },
+    {
+      label: 'Projects',
+      icon: 'lucideUsers',
+      route: '/app/projects',
     },
   ];
 
