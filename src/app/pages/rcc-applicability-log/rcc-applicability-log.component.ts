@@ -34,7 +34,7 @@ import {
   ConfirmationDialogResult,
 } from '../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
-import { RccApplicabilityLog, rccApplicabilityLogColumns } from './rcc-applicability-log.model';
+import { RccApplicabilityLog, rccApplicabilityLogColumns, RccApplicabilityLogResponse } from './rcc-applicability-log.model';
 import { RccApplicabilityLogService } from './rcc-applicability-log.service';
 
 @Component({
@@ -122,10 +122,10 @@ export class RccApplicabilityLogComponent implements OnInit, OnDestroy {
     this.loading.set(true);
     // Use searchQuery if provided, otherwise use the signal value
     const query = searchQuery !== undefined ? searchQuery : this.searchQuery();
-    this.rccApplicabilityLogService.getERLGlossaryList(query || undefined).subscribe({
-      next: (response: any) => {
+    this.rccApplicabilityLogService.getRccApplicabilityLog().subscribe({
+      next: (response: RccApplicabilityLogResponse) => {
         // Handle API response - adjust based on your API structure
-        const items = response?.items || response || [];
+        const items = response?.value?.items || [];
         this.data.set(Array.isArray(items) ? items : []);
         this.loading.set(false);
       },
@@ -161,11 +161,6 @@ export class RccApplicabilityLogComponent implements OnInit, OnDestroy {
     this.pageIndex.set(0); // Reset to first page on search
     // Push to subject for debounced API call
     this.searchSubject.next(query);
-  }
-
-  onImport(): void {
-    // In a real app, you would import from Excel/CSV
-    console.log('Importing data...');
   }
 
   onAddNew(): void {

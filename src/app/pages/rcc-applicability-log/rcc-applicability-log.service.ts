@@ -2,7 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpService } from '../../core/services/http.service';
-import { RccApplicabilityLog } from './rcc-applicability-log.model';
+import { RccApplicabilityLog, RccApplicabilityLogResponse } from './rcc-applicability-log.model';
 
 @Injectable({
     providedIn: 'root',
@@ -13,31 +13,23 @@ export class RccApplicabilityLogService {
     // name of the controller used in the backend
     authController = signal<string>('auth/');
 
-    rccApplicabilityLogController = signal<string>('RccApplicabilityLog/');
+    rccApplicabilityLogController = signal<string>('RccApplicabilityLog');
     getRccApplicabilityLogURL = signal<string>(
-        this.rccApplicabilityLogController() + 'GetRccApplicabilityLog'
+        this.rccApplicabilityLogController()
     );
     addRccApplicabilityLogURL = signal<string>(
-        this.rccApplicabilityLogController() + 'ManageRccApplicabilityLog'
+        this.rccApplicabilityLogController()
     );
     deleteRccApplicabilityLogURL = signal<string>(
-        this.rccApplicabilityLogController() + 'DeleteRccApplicabilityLog'
+        this.rccApplicabilityLogController()
     );
 
     /**
      * Get Rcc Applicability Log List
-     * @param colmn_header Optional column header to filter by
      * @returns Observable with Rcc Applicability Log List response
      */
-    getERLGlossaryList(colmn_header?: string): Observable<[]> {
-        let params = new HttpParams();
-        if (colmn_header && colmn_header.trim()) {
-            params = params.set('colmn_header', colmn_header.trim());
-        }
-        const url = params.toString()
-            ? this.getRccApplicabilityLogURL() + '?' + params.toString()
-            : this.getRccApplicabilityLogURL();
-        return this.http.getDataFromServer(url);
+    getRccApplicabilityLog(): Observable<RccApplicabilityLogResponse> {
+        return this.http.getDataFromServer(this.getRccApplicabilityLogURL());
     }
 
     /**
@@ -56,7 +48,7 @@ export class RccApplicabilityLogService {
      */
     deleteRccApplicabilityLogItem(id: number): Observable<any> {
         return this.http.deleteDataFromServer(
-            this.deleteRccApplicabilityLogURL() + '?id=' + id
+            this.deleteRccApplicabilityLogURL() + '/' + id
         );
     }
 }
