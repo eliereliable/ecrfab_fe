@@ -1,0 +1,193 @@
+<div class="max-h-[90vh] overflow-y-auto">
+  <hlm-dialog-header>
+    <h2 hlmDialogTitle>
+      {{ isEditMode() ? 'Edit RCC Applicability Log' : 'Add New RCC Applicability Log' }}
+    </h2>
+    <p hlmDialogDescription>
+      {{
+        isEditMode()
+          ? 'Update the information for this RCC Applicability Log.'
+          : 'Enter all required information for the new RCC Applicability Log.'
+      }}
+    </p>
+  </hlm-dialog-header>
+
+  <form [formGroup]="form" class="space-y-6 py-4" (ngSubmit)="onSave()">
+    <!-- Basic Information Section -->
+    <div class="space-y-4">
+      <h3 class="text-sm font-semibold text-[var(--foreground)] border-b pb-2">
+        Basic Information
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Project Select -->
+        <div class="space-y-2 md:col-span-2">
+          <label hlmLabel for="project_id">
+            Project <span class="text-destructive">*</span>
+          </label>
+          <brn-select formControlName="project_id" class="w-full">
+            <hlm-select-trigger
+              [class.border-destructive]="!isFieldValid('project_id')"
+              class="w-full"
+            >
+              <hlm-select-value placeholder="Select Project" />
+            </hlm-select-trigger>
+            <hlm-select-content>
+              @for (project of projects(); track project.id) {
+              <hlm-option [value]="project.id">
+                {{ project.project_name }}
+              </hlm-option>
+              }
+              @if (projects().length === 0) {
+              <div class="px-2 py-1 text-xs text-muted-foreground">
+                No projects available
+              </div>
+              }
+            </hlm-select-content>
+          </brn-select>
+          @if (getFieldError('project_id')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("project_id") }}
+          </p>
+          }
+        </div>
+
+        <!-- RCC Number -->
+        <div class="space-y-2">
+          <label hlmLabel for="rcc_num">
+            RCC Number <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="rcc_num"
+            type="text"
+            formControlName="rcc_num"
+            placeholder="Enter RCC number"
+            [class.border-destructive]="!isFieldValid('rcc_num')"
+          />
+          @if (getFieldError('rcc_num')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("rcc_num") }}
+          </p>
+          }
+        </div>
+
+        <!-- Spec Item -->
+        <div class="space-y-2">
+          <label hlmLabel for="spec_item">
+            Spec Item <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="spec_item"
+            type="text"
+            formControlName="spec_item"
+            placeholder="Enter spec item"
+            [class.border-destructive]="!isFieldValid('spec_item')"
+          />
+          @if (getFieldError('spec_item')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("spec_item") }}
+          </p>
+          }
+        </div>
+
+        <!-- WI Para -->
+        <div class="space-y-2">
+          <label hlmLabel for="wi_para">
+            WI Para <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="wi_para"
+            type="text"
+            formControlName="wi_para"
+            placeholder="Enter WI para"
+            [class.border-destructive]="!isFieldValid('wi_para')"
+          />
+          @if (getFieldError('wi_para')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("wi_para") }}
+          </p>
+          }
+        </div>
+
+        <!-- Action Category -->
+        <div class="space-y-2">
+          <label hlmLabel for="action_cat">
+            Action Category <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="action_cat"
+            type="text"
+            formControlName="action_cat"
+            placeholder="Enter action category"
+            [class.border-destructive]="!isFieldValid('action_cat')"
+          />
+          @if (getFieldError('action_cat')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("action_cat") }}
+          </p>
+          }
+        </div>
+
+        <!-- CFR -->
+        <div class="space-y-2">
+          <label hlmLabel for="cfr">
+            CFR <span class="text-destructive">*</span>
+          </label>
+          <input
+            hlmInput
+            id="cfr"
+            type="text"
+            formControlName="cfr"
+            placeholder="Enter CFR"
+            [class.border-destructive]="!isFieldValid('cfr')"
+          />
+          @if (getFieldError('cfr')) {
+          <p class="text-xs text-destructive">
+            {{ getFieldError("cfr") }}
+          </p>
+          }
+        </div>
+
+        <!-- Comments -->
+        <div class="space-y-2 md:col-span-2">
+          <label hlmLabel for="comments">
+            Comments
+          </label>
+          <textarea
+            hlmInput
+            id="comments"
+            rows="3"
+            formControlName="comments"
+            placeholder="Enter comments (optional)"
+            class="resize-none"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <hlm-dialog-footer>
+      <button
+        hlmBtn
+        type="button"
+        variant="outline"
+        brnDialogClose
+        (click)="onCancel()"
+      >
+        Cancel
+      </button>
+      <button
+        hlmBtn
+        type="submit"
+        variant="default"
+        [disabled]="!isFormValid()"
+      >
+        <ng-icon hlm name="lucideSave" size="16px" />
+        <span>Save</span>
+      </button>
+    </hlm-dialog-footer>
+  </form>
+</div>

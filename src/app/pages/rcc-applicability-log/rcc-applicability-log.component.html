@@ -1,0 +1,106 @@
+<div class="flex flex-col gap-6 w-full max-w-full">
+  <!-- Toolbar -->
+  <div
+    class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between"
+  >
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-center w-full lg:w-auto"
+    >
+      <!-- Search Input -->
+      <div
+        class="relative flex items-center flex-1 min-w-0 sm:flex-none sm:w-80"
+      >
+        <ng-icon
+          hlm
+          name="lucideSearch"
+          size="16px"
+          class="absolute left-3 text-[var(--muted-foreground)]"
+        />
+        <input
+          hlmInput
+          type="text"
+          placeholder="Search RCC Applicability Log"
+          class="pl-10 w-full"
+          [value]="searchQuery()"
+          (input)="onSearchChange($event)"
+        />
+      </div>
+
+      <!-- Filter dropdown (placeholder for future) -->
+      <button
+        hlmBtn
+        variant="outline"
+        size="sm"
+        class="flex items-center gap-2 shrink-0"
+      >
+        <ng-icon hlm name="lucideFilter" size="16px" />
+        <span>Filters</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <!-- Import button -->
+      <button
+        hlmBtn
+        variant="outline"
+        size="sm"
+        class="flex items-center gap-2 shrink-0"
+        (click)="onImport()"
+      >
+        <ng-icon hlm name="lucideUpload" size="16px" />
+        <span class="hidden sm:inline">Upload</span>
+      </button>
+
+      <!-- Add New button -->
+      <button
+        hlmBtn
+        variant="default"
+        size="sm"
+        class="flex items-center gap-2 shrink-0 bg-[var(--primary)] text-white hover:bg-[var(--accent)]"
+        (click)="onAddNew()"
+      >
+        <ng-icon hlm name="lucidePlus" size="16px" />
+        <span>Add New</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Data Grid Card -->
+  <app-data-grid
+    [dataGrid]="paginatedData()"
+    [columns]="columns()"
+    [pageIndex]="pageIndex()"
+    [pageSize]="pageSize()"
+    [totalCount]="filteredTotalCount()"
+    [sorting]="sorting()"
+    [actionsTemplate]="actionsTemplate"
+    (pageChange)="onPageChange($event)"
+    (pageSizeChange)="onPageSizeChange($event)"
+    (sortingChange)="onSortingChange($event)"
+  />
+</div>
+
+<ng-template #actionsTemplate let-item>
+  <div class="flex items-center gap-2">
+    <button
+      hlmBtn
+      variant="ghost"
+      size="sm"
+      class="h-8 w-8 p-0"
+      (click)="onEdit(item)"
+      title="Edit"
+    >
+      <ng-icon hlm name="lucideEdit" size="16px" />
+    </button>
+    <button
+      hlmBtn
+      variant="ghost"
+      size="sm"
+      class="h-8 w-8 p-0 text-destructive hover:text-destructive"
+      (click)="onDelete(item)"
+      title="Delete"
+    >
+      <ng-icon hlm name="lucideTrash2" size="16px" />
+    </button>
+  </div>
+</ng-template>

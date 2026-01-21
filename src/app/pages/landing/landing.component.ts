@@ -10,6 +10,7 @@ import {
 } from '@ng-icons/lucide';
 import { HlmButton } from '@libs/ui/button';
 import { HlmIcon } from '@libs/ui/icon';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-landing',
@@ -31,7 +32,7 @@ import { HlmIcon } from '@libs/ui/icon';
 })
 export class LandingComponent {
   readonly loginUrl =
-    'http://localhost:8086/Auth/login?returnUrl=http%3A%2F%2Flocalhost%3A8086';
+    environment.serverApiSSO + 'Auth/login?returnUrl=http%3A%2F%2Flocalhost%3A8086';
 
   onLogin(): void {
     window.location.href = this.loginUrl;

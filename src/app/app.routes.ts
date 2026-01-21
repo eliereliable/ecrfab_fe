@@ -9,11 +9,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'login',
-    loadComponent: () =>
-      import('./pages/login/login.component').then((m) => m.LoginComponent),
-  },
-  {
     path: 'app',
     loadComponent: () =>
       import('./layout/layout.component').then((m) => m.LayoutComponent),
@@ -83,10 +78,22 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'rcc-applicability-log',
+        loadComponent: () =>
+          import('./pages/rcc-applicability-log/rcc-applicability-log.component').then(
+            (m) => m.RccApplicabilityLogComponent
+          ),
+      },
+      {
         path: '',
         redirectTo: 'erl-glossary',
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: '**',
+    redirectTo: '',
+    pathMatch: 'full',
   },
 ];

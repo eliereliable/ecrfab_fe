@@ -18,7 +18,7 @@ export interface HTTPResponse {
 export class HttpService {
   http = inject(HttpClient);
   // API base URL from environment
-  apiUrl = signal<string>(environment.serverApi);
+  apiUrl = signal<string>(environment.serverApiBe);
 
   /**
    * Sends a POST request to the server with form data.

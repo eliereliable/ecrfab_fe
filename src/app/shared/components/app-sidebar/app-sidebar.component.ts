@@ -139,6 +139,11 @@ export class AppSidebarComponent {
       icon: 'lucideUsers',
       route: '/app/projects',
     },
+    {
+      label: 'RCC Applicability Log',
+      icon: 'lucideClipboardList',
+      route: '/app/rcc-applicability-log',
+    },
   ];
 
   toggleExpanded(label: string): void {
