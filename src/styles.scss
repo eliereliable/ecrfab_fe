@@ -441,26 +441,59 @@ table {
 
 /* Ensure toast appears above dialogs */
 /* Dialog uses z-50, CDK overlay typically uses z-index 1000, so toast needs to be much higher */
-[data-sonner-toaster],
-[data-sonner-toast],
-.sonner-toaster,
-ngx-sonner-toaster {
-  z-index: 9999 !important;
-}
+/* Using 10000 to ensure it's above any CDK overlay configuration */
 
-/* Ensure toast container is positioned and above everything */
+/* Target the ngx-sonner portal container - this is the key */
+/* ngx-sonner renders toasts in a portal appended to body */
 [data-sonner-toaster] {
+  z-index: 10000 !important;
   position: fixed !important;
-  z-index: 9999 !important;
 }
 
-/* Target toast container when rendered at root level */
+/* Target individual toast elements */
+[data-sonner-toast] {
+  z-index: 10000 !important;
+}
+
+/* Target the Angular component wrapper */
+ngx-sonner-toaster,
+hlm-toaster.toast-above-dialog {
+  z-index: 10000 !important;
+}
+
+/* Ensure toast container is above CDK overlay (used by dialogs) */
+/* CDK overlay typically uses z-index 1000, so 10000 should be above it */
 body > [data-sonner-toaster] {
-  z-index: 9999 !important;
+  z-index: 10000 !important;
 }
 
-/* Ensure toast is above CDK overlay containers (used by dialogs) */
+/* Target toast when inside any container */
+* [data-sonner-toaster] {
+  z-index: 10000 !important;
+}
+
+/* Override any CDK overlay z-index for toast containers */
 .cdk-overlay-container [data-sonner-toaster],
 .cdk-overlay-container [data-sonner-toast] {
-  z-index: 9999 !important;
+  z-index: 10000 !important;
+}
+
+/* Ensure toast portal is above dialog overlay - most important rule */
+/* This ensures toasts appear above CDK overlay backdrop and panes */
+body [data-sonner-toaster] {
+  z-index: 10000 !important;
+}
+
+/* Additional specificity for toast elements */
+body [data-sonner-toast] {
+  z-index: 10000 !important;
+}
+
+/* Ensure CDK overlay backdrop doesn't cover toasts */
+.cdk-overlay-backdrop {
+  z-index: 1000 !important;
+}
+
+.cdk-overlay-pane {
+  z-index: 1001 !important;
 }

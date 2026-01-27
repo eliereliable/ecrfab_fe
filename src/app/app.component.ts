@@ -10,4 +10,14 @@ import { HlmToasterImports } from '@libs/ui/sonner';
 })
 export class AppComponent {
   title = 'ecrfab';
+  
+  // Toast options to ensure toasts appear above dialogs
+  toastOptions = {
+    classNames: {
+      toast: '!z-[9999]'
+    },
+    style: {
+      zIndex: 9999
+    }
+  };
 }
