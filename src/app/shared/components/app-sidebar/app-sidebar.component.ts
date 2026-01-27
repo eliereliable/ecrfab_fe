@@ -94,41 +94,41 @@ export class AppSidebarComponent {
       icon: 'lucideClipboardList',
       route: '/app/erl-glossary',
     },
-    {
-      label: 'Required Report Log',
-      icon: 'lucideFileText',
-      route: '/app/uss-gravely-required-report-log',
-    },
-    {
-      label: 'WAF Log',
-      icon: 'lucideClipboardList',
-      route: '/app/uss-gravely-waf-log',
-    },
-    {
-      label: 'CFR Log',
-      icon: 'lucideShip',
-      route: '/app/cfr-log',
-    },
-    {
-      label: 'JSR',
-      icon: 'lucideWrench',
-      route: '/app/jsr',
-    },
-    {
-      label: 'Time By Job',
-      icon: 'lucideCalendar',
-      route: '/app/time-by-job',
-    },
-    {
-      label: 'TIP',
-      icon: 'lucideUsers',
-      route: '/app/tip',
-    },
-    {
-      label: 'MSP',
-      icon: 'lucideCalendar',
-      route: '/app/msp',
-    },
+    // {
+    //   label: 'Required Report Log',
+    //   icon: 'lucideFileText',
+    //   route: '/app/uss-gravely-required-report-log',
+    // },
+    // {
+    //   label: 'WAF Log',
+    //   icon: 'lucideClipboardList',
+    //   route: '/app/uss-gravely-waf-log',
+    // },
+    // {
+    //   label: 'CFR Log',
+    //   icon: 'lucideShip',
+    //   route: '/app/cfr-log',
+    // },
+    // {
+    //   label: 'JSR',
+    //   icon: 'lucideWrench',
+    //   route: '/app/jsr',
+    // },
+    // {
+    //   label: 'Time By Job',
+    //   icon: 'lucideCalendar',
+    //   route: '/app/time-by-job',
+    // },
+    // {
+    //   label: 'TIP',
+    //   icon: 'lucideUsers',
+    //   route: '/app/tip',
+    // },
+    // {
+    //   label: 'MSP',
+    //   icon: 'lucideCalendar',
+    //   route: '/app/msp',
+    // },
     {
       label: 'Import Files',
       icon: 'lucideUpload',
