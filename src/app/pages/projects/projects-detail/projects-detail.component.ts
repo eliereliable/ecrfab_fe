@@ -141,7 +141,6 @@ export class ProjectsDetailComponent {
       },
       error: (error) => {
         console.error('Error saving project:', error);
-        toast.error('Failed to save project. Please try again.');
       },
     });
   }

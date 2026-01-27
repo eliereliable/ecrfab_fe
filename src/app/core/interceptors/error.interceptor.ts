@@ -12,6 +12,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       // Check if the error is a 409 Conflict status
       if (error.status === 409) {
+        console.log(error.error);
         // Extract error message from the response
         const errorMessage = error.error?.message || 'An error occurred';
         

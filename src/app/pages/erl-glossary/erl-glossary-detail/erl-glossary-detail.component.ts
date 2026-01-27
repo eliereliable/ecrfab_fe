@@ -186,7 +186,6 @@ export class ErlGlossaryDetailComponent {
       },
       error: (error) => {
         console.error('Error saving ERL Glossary item:', error);
-        toast.error('Failed to save ERL Glossary item. Please try again.');
       },
     });
   }

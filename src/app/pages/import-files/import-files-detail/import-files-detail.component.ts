@@ -296,7 +296,6 @@ export class ImportFilesDetailComponent {
       },
       error: (error) => {
         console.error('Error saving import file:', error);
-        toast.error('Failed to import file. Please try again.');
       },
     });
   }

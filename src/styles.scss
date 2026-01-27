@@ -441,9 +441,9 @@ table {
 
 /* Ensure toast appears above dialogs */
 [data-sonner-toaster] {
-  z-index: 100 !important;
+  z-index: 9999 !important;
 }
 
 [data-sonner-toast] {
-  z-index: 100 !important;
+  z-index: 9999 !important;
 }

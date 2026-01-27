@@ -201,7 +201,6 @@ export class RccApplicabilityLogDetailComponent {
       },
       error: (error) => {
         console.error('Error saving RCC Applicability Log:', error);
-        toast.error('Failed to save RCC Applicability Log. Please try again.');
       },
     });
   }
