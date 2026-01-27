@@ -1,15 +1,14 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import {
-  HlmSidebarWrapper,
   HlmSidebarInset,
   HlmSidebarService,
+  HlmSidebarWrapper,
 } from '@libs/ui/sidebar';
-import { AppSidebarComponent } from '../shared/components/app-sidebar/app-sidebar.component';
 import {
-  AppHeaderComponent,
-  UserInfo,
+  AppHeaderComponent
 } from '../shared/components/app-header/app-header.component';
+import { AppSidebarComponent } from '../shared/components/app-sidebar/app-sidebar.component';
 
 @Component({
   selector: 'app-layout',
@@ -27,17 +26,4 @@ import {
 export class LayoutComponent {
   private readonly router = inject(Router);
   readonly sidebarService = inject(HlmSidebarService);
-
-  readonly currentUser: UserInfo = {
-    name: 'John Smith',
-    email: 'john.smith@ecrfab.com',
-    initials: 'JS',
-    role: 'Project Manager',
-  };
-
-  onLogout(): void {
-    // Handle logout logic here
-    console.log('Logging out...');
-    this.router.navigate(['/login']);
-  }
 }
