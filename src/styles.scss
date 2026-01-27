@@ -438,3 +438,12 @@ table {
     @apply bg-background text-foreground;
   }
 }
+
+/* Ensure toast appears above dialogs */
+[data-sonner-toaster] {
+  z-index: 100 !important;
+}
+
+[data-sonner-toast] {
+  z-index: 100 !important;
+}
