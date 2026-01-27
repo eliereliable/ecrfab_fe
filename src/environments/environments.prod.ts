@@ -1,4 +1,7 @@
 export const environment = {
   production: true,
-  serverApi: 'http://localhost:8086/',
+  // backend server api
+  serverApiBe: 'http://localhost:8086/api/',
+  // SSO server api
+  serverApiSSO: 'http://localhost:8086/',
 };
