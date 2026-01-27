@@ -85,6 +85,19 @@ export class HttpService {
   }
 
   /**
+   * Sends a GET request to a full URL (used for SSO or external endpoints).
+   * @param fullUrl The complete URL including the base path.
+   * @returns Observable<any> - The server response.
+   */
+  getDataFromFullUrl(fullUrl: string) {
+    return this.http
+      .get(fullUrl, {
+        withCredentials: true
+      })
+      .pipe(map((response: any) => response));
+  }
+
+  /**
    * Sends a GET request to the server and returns a Blob.
    * @param action The API endpoint action.
    * @returns Observable<Blob> - The server response.

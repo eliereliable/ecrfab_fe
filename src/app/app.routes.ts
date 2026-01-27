@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { AuthResolver } from './core/resolvers/auth.resolver';
+import { AuthGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +14,8 @@ export const routes: Routes = [
     path: 'app',
     loadComponent: () =>
       import('./layout/layout.component').then((m) => m.LayoutComponent),
+    canActivate: [AuthGuard],
+    resolve: { auth: AuthResolver },
     children: [
       {
         path: 'erl-glossary',

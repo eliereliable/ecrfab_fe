@@ -1,8 +1,8 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
-  input,
   output,
 } from '@angular/core';
 import { HlmAvatar, HlmAvatarFallback, HlmAvatarImage } from '@libs/ui/avatar';
@@ -26,13 +26,13 @@ import {
   lucideSettings,
   lucideUser,
 } from '@ng-icons/lucide';
+import { SecurityService } from '../../../core/services/security.service';
 
 export interface UserInfo {
   name: string;
   email: string;
   avatar?: string;
   initials: string;
-  role: string;
 }
 
 @Component({
@@ -68,17 +68,41 @@ export interface UserInfo {
 })
 export class AppHeaderComponent {
   readonly sidebarService = inject(HlmSidebarService);
-
-  readonly user = input<UserInfo>({
-    name: 'John Doe',
-    email: 'john.doe@ecrfab.com',
-    initials: 'JD',
-    role: 'Project Manager',
-  });
+  readonly securityService = inject(SecurityService);
 
   readonly logout = output<void>();
 
+  // Computed user info from SecurityService
+  readonly user = computed<UserInfo>(() => {
+    const userName = this.securityService.userName() || 'User';
+    const email = this.securityService.email() || '';
+    const initials = this.getInitials(userName);
+
+    return {
+      name: userName,
+      email: email,
+      initials: initials,
+    };
+  });
+
+  /**
+   * Generate initials from user name
+   * @param name Full name of the user
+   * @returns Initials (max 2 characters)
+   */
+  private getInitials(name: string): string {
+    if (!name) return 'U';
+    
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) {
+      return parts[0].substring(0, 2).toUpperCase();
+    }
+    
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
   onLogout(): void {
+    this.securityService.logout();
     this.logout.emit();
   }
 }
