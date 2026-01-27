@@ -440,10 +440,27 @@ table {
 }
 
 /* Ensure toast appears above dialogs */
-[data-sonner-toaster] {
+/* Dialog uses z-50, CDK overlay typically uses z-index 1000, so toast needs to be much higher */
+[data-sonner-toaster],
+[data-sonner-toast],
+.sonner-toaster,
+ngx-sonner-toaster {
   z-index: 9999 !important;
 }
 
-[data-sonner-toast] {
+/* Ensure toast container is positioned and above everything */
+[data-sonner-toaster] {
+  position: fixed !important;
+  z-index: 9999 !important;
+}
+
+/* Target toast container when rendered at root level */
+body > [data-sonner-toaster] {
+  z-index: 9999 !important;
+}
+
+/* Ensure toast is above CDK overlay containers (used by dialogs) */
+.cdk-overlay-container [data-sonner-toaster],
+.cdk-overlay-container [data-sonner-toast] {
   z-index: 9999 !important;
 }

@@ -58,6 +58,7 @@ export class HlmToaster {
 			'--normal-text': 'var(--popover-foreground)',
 			'--normal-border': 'var(--border)',
 			'--border-radius': 'var(--radius)',
+			'z-index': '9999',
 		},
 		{ alias: 'style' },
 	);
