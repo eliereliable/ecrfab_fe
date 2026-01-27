@@ -14,10 +14,10 @@ export class AppComponent {
   // Toast options to ensure toasts appear above dialogs
   toastOptions = {
     classNames: {
-      toast: '!z-[9999]'
+      toast: '!z-[99999]'
     },
     style: {
-      zIndex: 9999
+      zIndex: 99999
     }
   };
 }

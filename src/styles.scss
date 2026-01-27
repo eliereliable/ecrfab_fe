@@ -440,56 +440,31 @@ table {
 }
 
 /* Ensure toast appears above dialogs */
-/* Dialog uses z-50, CDK overlay typically uses z-index 1000, so toast needs to be much higher */
-/* Using 10000 to ensure it's above any CDK overlay configuration */
+/* CDK overlay container uses z-index 9999, so toast needs to be higher */
 
-/* Target the ngx-sonner portal container - this is the key */
-/* ngx-sonner renders toasts in a portal appended to body */
+/* Target the ngx-sonner portal container */
 [data-sonner-toaster] {
-  z-index: 10000 !important;
+  z-index: 99999 !important;
   position: fixed !important;
 }
 
 /* Target individual toast elements */
 [data-sonner-toast] {
-  z-index: 10000 !important;
+  z-index: 99999 !important;
 }
 
 /* Target the Angular component wrapper */
 ngx-sonner-toaster,
 hlm-toaster.toast-above-dialog {
-  z-index: 10000 !important;
+  z-index: 99999 !important;
 }
 
-/* Ensure toast container is above CDK overlay (used by dialogs) */
-/* CDK overlay typically uses z-index 1000, so 10000 should be above it */
-body > [data-sonner-toaster] {
-  z-index: 10000 !important;
+/* Ensure CDK overlay container and its children don't cover toasts */
+/* The cdk-overlay-container is where Angular CDK renders all dialogs */
+.cdk-overlay-container {
+  z-index: 9999 !important;
 }
 
-/* Target toast when inside any container */
-* [data-sonner-toaster] {
-  z-index: 10000 !important;
-}
-
-/* Override any CDK overlay z-index for toast containers */
-.cdk-overlay-container [data-sonner-toaster],
-.cdk-overlay-container [data-sonner-toast] {
-  z-index: 10000 !important;
-}
-
-/* Ensure toast portal is above dialog overlay - most important rule */
-/* This ensures toasts appear above CDK overlay backdrop and panes */
-body [data-sonner-toaster] {
-  z-index: 10000 !important;
-}
-
-/* Additional specificity for toast elements */
-body [data-sonner-toast] {
-  z-index: 10000 !important;
-}
-
-/* Ensure CDK overlay backdrop doesn't cover toasts */
 .cdk-overlay-backdrop {
   z-index: 1000 !important;
 }
